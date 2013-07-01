@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>修改密码</title>
+	<link rel="stylesheet" type="text/css" href="./css/Pwd.css">
+	<script language="javascript" src="./js/checkform.js"></script>
+	<script language="javascript">
+        var check=function(id)
+        {
+        	var container = document.getElementById(id);
+        	//alert("dfdfd");
+        	if(container.value=="")
+        		container.style.background="url(./pics/"+id+".png)0px 5px no-repeat";	
+        	else
+        		container.style.background="white";
+        }
+	</script>
+
+</head>
+<body>
+	<a id="register" href="./login.html">
+	</a>
+	<a id="login" href="./login.html">
+		<img src="./pics/startpage.png" alt="" />
+	</a>
+	<form  id="form2" name="form2" action="registerServlet" method="post" onSubmit="return CheckForm.Check(this,2)">
+		<div class="user">
+			<span id="nameIcon"></span>
+			<span id="Sid" name="Sid">
+				&nbsp;&nbsp;1103710321
+			</span>
+		</div>
+		<div class="user">
+			<span id="pwdIcon"></span>
+			<input id="password" onkeyup="check('password')"name="password" type="password" /><br>
+		</div>
+		<div class="user">
+			<span id="pwdIcon"></span>
+			<input id="password2" onkeyup="check('password2')" name="password2" dataType="SafeString" msg="密码不安全！" type="password" 
+			  /><br>
+		</div>
+		<div class="user">
+			<span id="pwdIcon"></span>
+			<input id="password3"  onkeyup="check('password3')" name="password3" dataType="Repeat" to="password" msg="密码不一致" type="password" 
+			 /><br>
+		</div>
+	    <input name="submit1" id="submit" type="submit" value="更改"/>
+	</form>
+	
+</div>
+<div id="footer">
+			<a href="#">关亍W3CStudy</a> | <a href="#">广告服务</a> | <a href="#">提交问题</a> | <a href="#">联系我们</a> | <a href="#">版权声明</a> | <a href="#">关于隐私</a> | <a href="#">合作伙伴</a>
+		<br/>
+			<a href="#">京ICP备10055601号</a>
+			All rights(C)2008-2010 Reserved
+	</div>
+</body>
+</html>

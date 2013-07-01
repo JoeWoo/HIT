@@ -1,0 +1,86 @@
+@CHARSET "UTF-8";
+body,div,a,form{padding: 0;margin: 0}
+img{border: none;}
+h1{font-size: 100%}
+html{background: url(../pics/bg.gif)repeat-x;}
+body{
+	background:url(../pics/clouds.gif) repeat-x; 
+	padding-top:45px; 
+	font-family:Verdana, Geneva, sans-serif;
+	}
+#register{
+	display: block;
+	width:93px;
+	height:48px; 
+	background: url(../pics/login-switcher.png)no-repeat 0px 0px;
+	position:absolute;
+	top:20px;
+	right:0
+	}
+#register:hover{background:url(../pics/login-switcher.png)no-repeat -120px 0px}
+#login {
+	display: block;
+	width:278px;height:56px;
+	background:url(../pics/startpage.png)no-repeat;
+	margin: 0px auto;margin-top:100px;
+	}
+#form2{
+	display: block;
+	width: 300px;height:195px;
+	margin: 0px auto;margin-top:40px;
+	}
+.user{
+	width:288px;height:52px;
+	background:url(../pics/startpage-input.png) no-repeat -210px -52px;
+	line-height: 52px;
+	margin: 0px auto;
+	 margin-bottom: 6px;
+	}
+.user:hover{
+	background:url(../pics/startpage-input.png) no-repeat -210px 0px;
+	}
+#nameIcon,#emailIcon,#usernameIcon,#pwdIcon{
+	float:left;
+	width:16px;height:16px;
+	display: block;
+	margin-top:20px;margin-left:10px;margin-right:10px;
+	}
+#nameIcon{background:url(../pics/feed-icons.png)no-repeat -299px -30px;}
+#usernameIcon{background:url(../pics/feed-icons.png)no-repeat -59px -30px;}
+#emailIcon{background:url(../pics/startpage-input.png)no-repeat 0 -197px;}
+#pwdIcon{background:url(../pics/startpage-input.png)no-repeat 0 -300px;}
+label{float: left;position: absolute;z-index: 10;color: #ABACAD;
+font-size: 16px;}
+#username,#password,#password2,#password3,#name,#email{
+	width:234px;height:32px;
+	line-height:32px;
+	border:none;
+	margin: 10px auto;font-family: "Microsoft Yahei", "微软雅黑", Tahoma, Arial, Helvetica;}
+#password{
+	background:url(../pics/password.png) 0px 5px no-repeat;
+}
+#password2{
+	background:url(../pics/password2.png) 0px 5px no-repeat;
+}
+#password3{
+	background:url(../pics/password3.png) 0px 5px no-repeat;
+}
+#submit{
+	width:300px;height:39px;border:none;
+	margin:0px auto;margin-top:20px;color:white;
+	background:url(../pics/button-bg.png)no-repeat 0px -700px ;
+	}
+#submit:hover{background:url(../pics/button-bg.png)no-repeat 0px -600px}
+#footer{
+background:#fff;
+height:52px;
+line-height:18px;
+padding-top:18px;
+text-align:center;
+color:#9EA0A3;
+font-size:12px;
+margin:0 auto;
+margin-top: 140px;
+}
+#footer a{color:#9EA0A3; text-decoration:none;}
+#footer a:hover{text-decoration:underline;}
