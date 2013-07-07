@@ -43,7 +43,8 @@ public class UpdateCourse extends HttpServlet {
 		String Tid = request.getParameter("Teacher");
 		String term = DataManager.getTerm();
 		String Tempid = request.getParameter("Tempid");
-		DataManager.updateTempCourse(Tempid,cid, Mid, Tid,term);
+		String Syear=new String(request.getParameter("Syear").getBytes("ISO-8859-1"),"utf-8");
+		DataManager.updateTempCourse(Tempid,cid, Mid, Tid,term,Syear);
 	}
 
 	/**

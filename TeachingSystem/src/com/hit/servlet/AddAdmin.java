@@ -9,19 +9,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.hit.DataControllor.DBDeliver;
 
-//import com.hit.DataControllor.DBControllor;
-
 /**
- * Servlet implementation class AddTeacher
+ * Servlet implementation class AddAdmin
  */
-@WebServlet("/AddTeacher")
-public class AddTeacher extends HttpServlet {
+@WebServlet("/AddAdmin")
+public class AddAdmin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public AddTeacher() {
+    public AddAdmin() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -32,15 +30,16 @@ public class AddTeacher extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String did = new String(request.getParameter("Did").getBytes("ISO-8859-1"),"utf-8");
-		String ID = new String(request.getParameter("Tid").getBytes("ISO-8859-1"),"utf-8");
+		String ID = new String(request.getParameter("Aid").getBytes("ISO-8859-1"),"utf-8");
 		String telephone = new String(request.getParameter("tel").getBytes("ISO-8859-1"),"utf-8");
 		String name = new String(request.getParameter("name").getBytes("ISO-8859-1"),"utf-8");
 		String personID = new String(request.getParameter("personid").getBytes("ISO-8859-1"),"utf-8");
 		String email = new String(request.getParameter("email").getBytes("ISO-8859-1"),"utf-8");
-		String ttitle = new String(request.getParameter("title").getBytes("ISO-8859-1"),"utf-8");
+		//String ttitle = new String(request.getParameter("title").getBytes("ISO-8859-1"),"utf-8");
 		String birthday = new String(request.getParameter("bir").getBytes("ISO-8859-1"),"utf-8");
 		String sex = new String(request.getParameter("sex").getBytes("ISO-8859-1"),"utf-8");
-		DBDeliver.insertTeacher(ID, "123456", name, email, telephone, personID, "#", sex, birthday, did, ttitle);
+		DBDeliver.insertAdministrator(ID, "123456", name, email, telephone, personID, "asd", sex, birthday, did);
+		//DBDeliver.insertTeacher(ID, "123456", name, email, telephone, personID, "", sex, birthday, did, ttitle);
 	}
 
 	/**

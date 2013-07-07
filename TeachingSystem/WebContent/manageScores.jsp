@@ -49,20 +49,20 @@
 						<div>
 						&nbsp;
 						<span class="week">院系：</span>
-						<select id="dept-input" name="dept-input" onchange="getMajor(0)">
+						<select id="dept-input" name="dept-input" onchange="getMajor(0);">
                         <option value="1">软件学院</option>
                        
 						</select>
 						&nbsp;
 			
 						<span class="week">专业：</span>
-						<select id="major-input" name="major-input" >
+						<select id="major-input" name="major-input" onchange="getClass(0)" >
                         <option value="nochoose">-未选择-</option>
 						</select>
 						&nbsp;
 					
 						<span class="week">年级：</span>
-						<select id="year-input" name="major-input" >
+						<select id="year-input" name="major-input" onchange="getClass(0)" >
                         <%
                         	int cnt = 0;
                         	for(String s:sList){
@@ -88,9 +88,8 @@
 						&nbsp;
 						&nbsp;
 						<span class="week">班号：</span>
-						<select id="class-input" name="major-input" >
-                        <option value="0"><option>
-                        <option value="1">1103710321</option>
+						<select id="class-input" name="major-input" onclick="getStudent()" >
+                        
 						</select>
 						&nbsp;
 						<span class="week">学号：</span>
@@ -107,93 +106,16 @@
 
 				</form>
 				<div id="biao1" >
-					<table  id="scorestable"border="1" cellpadding="0" cellspacing="0">
-				        <tbody>
-				        	<tr bgcolor="#CCCCCC">
-					            <td height="28"><div><strong>学期</strong></div></td>
-					            <td><div><strong>课程号</strong></div></td>
-					            <td width="25%"><div><strong>课程名</strong></div></td>
-					            <td width="10%"><div><strong>授课教师</strong></div></td>
-					            <td><div><strong>类别</strong></div></td>
-					            <td><div><strong>学分</strong></div></td>
-					            <td><div><strong>学时</strong></div></td>
-					            <td><div><strong>成绩</strong></div></td>
-					            <td><div><strong>成绩类别</strong></div></td>
-					            <td><div><strong>备注</strong></div></td>
-					        </tr>
-				       		<tr bgcolor="#C8D6FF">
-					            <td height="25">2010秋季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-					            <td></td>
-				           </tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010秋季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-					            <td></td>
-				           </tr>
-				           <tr><td colspan="10" height="10">&nbsp;</td></tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010春季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-					            <td></td>
-				           </tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010春季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-					            <td></td>
-				           </tr>
+					<table  id="scorestable" border="1"  cellpadding="0" cellspacing="0">
+				        <tbody id="score-input">
+				        	
 				      </tbody>
 				  </table>	
 				</div>
 				<div id="biao2">
-					<table  id="scorestable"border="1" cellpadding="0" cellspacing="0">
-				        <tbody>
-				        	<tr bgcolor="#CCCCCC">
-				        		<td height="28"><div><strong>排名</strong></div></td>
-					            <td ><div><strong>学号</strong></div></td>
-					            <td width="20%"><div><strong>姓名</strong></div></td>
-					            <td width="25%"><div><strong>平均学分绩</strong></div></td>
-					            <td width="10%"><div><strong>不及格科目数</strong></div></td>
-					            <td><div><strong>百分比</strong></div></td>
-					            <td><div><strong>备注</strong></div></td>
-					        </tr>
-				       		<tr bgcolor="#C8D6FF">
-				       			<td height="25">1</td>
-				       			<td>1103710321</td>
-					            <td>吴健</td>
-					            <td >80.76</td>
-					            <td>0</td>
-					            <td>48.67%</td>
-					            <td></td>  
-				           </tr>
+					<table  id="scorestable" border="1" cellpadding="0"  cellspacing="0">
+				        <tbody id="xuefenji">
+				        	
 				      </tbody>
 				  </table>
 				</div>

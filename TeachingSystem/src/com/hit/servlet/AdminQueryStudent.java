@@ -33,12 +33,13 @@ public class AdminQueryStudent extends HttpServlet {
 		String Did = request.getParameter("Did");
 		String Mid = request.getParameter("Mid");
 		String Syear = request.getParameter("Syear");
-		String Sid  =request.getParameter("Sid");
+		//String Sid  =request.getParameter("Sid");
+		String Sclass = request.getParameter("Sclass");
 		String sql = "select Student.Sid,Student.Sname,Student.Ssex,Dept.Did,Dept.Dname,Student.Saddress,Major.Mname,Major.Mid,Student.Sclass," +
 				"Student.SpersonID,Student.Sbirthday,Student.Stelephone,Student.Semail from Student inner join Dept on Student.Did = Dept.Did inner join Major" +
 				" on Student.Mid=Major.Mid where";
 		
-		if(Sid.equals("nochoose")){
+		
 			boolean flag = false;
 			if(!Did.equals("nochoose")){
 				flag = true;
@@ -49,11 +50,17 @@ public class AdminQueryStudent extends HttpServlet {
 				flag = true;
 				sql+=String.format(" Student.Mid='%s'", Mid);
 			}
+			if(!Sclass.equals("nochoose")){
+				if(flag)sql+=" and ";
+				flag = true;
+				sql+=String.format(" Student.Sclass='%s'", Sclass);
+			}
 			if(flag) sql+=" and ";
 			sql+=String.format(" Student.Syear='%s'",Syear);
-		}else {
-			sql+=String.format(" Student.Sid='%s'", Sid);
-		}
+		
+			
+	
+		System.out.println(sql);
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		out.print("<tr bgcolor='#CCCCCC'><td height='28'><div><strong>Ñ§ºÅ</strong></div></td>" +

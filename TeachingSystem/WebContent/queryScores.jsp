@@ -69,62 +69,62 @@
 				<div id="biao">
 					<table  id="scorestable"border="1" cellpadding="0" cellspacing="0">
 				        <tbody id="score-input">
-				        	<tr bgcolor="#CCCCCC">
-					            <td height="28"><div><strong>学期</strong></div></td>
-					            <td><div><strong>课程号</strong></div></td>
-					            <td width="25%"><div><strong>课程名</strong></div></td>
-					            <td width="10%"><div><strong>授课教师</strong></div></td>
-					            <td><div><strong>类别</strong></div></td>
-					            <td><div><strong>学分</strong></div></td>
-					            <td><div><strong>学时</strong></div></td>
-					            <td><div><strong>成绩</strong></div></td>
-					            <td><div><strong>备注</strong></div></td>
-					        </tr>
-				       		<tr bgcolor="#C8D6FF">
-					            <td height="25">2010秋季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-				           </tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010秋季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-				           </tr>
-				           <tr><td colspan="10" height="10">&nbsp;</td></tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010春季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-				           </tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010春季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>88</td>
-					            <td></td>
-				           </tr>
+<!-- 				        	<tr bgcolor="#CCCCCC"> -->
+<!-- 					            <td height="28"><div><strong>学期</strong></div></td> -->
+<!-- 					            <td><div><strong>课程号</strong></div></td> -->
+<!-- 					            <td width="25%"><div><strong>课程名</strong></div></td> -->
+<!-- 					            <td width="10%"><div><strong>授课教师</strong></div></td> -->
+<!-- 					            <td><div><strong>类别</strong></div></td> -->
+<!-- 					            <td><div><strong>学分</strong></div></td> -->
+<!-- 					            <td><div><strong>学时</strong></div></td> -->
+<!-- 					            <td><div><strong>成绩</strong></div></td> -->
+<!-- 					            <td><div><strong>备注</strong></div></td> -->
+<!-- 					        </tr> -->
+<!-- 				       		<tr bgcolor="#C8D6FF"> -->
+<!-- 					            <td height="25">2010秋季</td> -->
+<!-- 					            <td>08T1370030</td> -->
+<!-- 					            <td>程序设计语言</td> -->
+<!-- 					            <td>赵岩</td> -->
+<!-- 					            <td>必修</td> -->
+<!-- 					            <td>4.5</td> -->
+<!-- 					            <td>70</td> -->
+<!-- 					            <td>88</td> -->
+<!-- 					            <td></td> -->
+<!-- 				           </tr> -->
+<!-- 				           <tr bgcolor="#C8D6FF"> -->
+<!-- 					            <td height="25">2010秋季</td> -->
+<!-- 					            <td>08T1370030</td> -->
+<!-- 					            <td>程序设计语言</td> -->
+<!-- 					            <td>赵岩</td> -->
+<!-- 					            <td>必修</td> -->
+<!-- 					            <td>4.5</td> -->
+<!-- 					            <td>70</td> -->
+<!-- 					            <td>88</td> -->
+<!-- 					            <td></td> -->
+<!-- 				           </tr> -->
+<!-- 				           <tr><td colspan="10" height="10">&nbsp;</td></tr> -->
+<!-- 				           <tr bgcolor="#C8D6FF"> -->
+<!-- 					            <td height="25">2010春季</td> -->
+<!-- 					            <td>08T1370030</td> -->
+<!-- 					            <td>程序设计语言</td> -->
+<!-- 					            <td>赵岩</td> -->
+<!-- 					            <td>必修</td> -->
+<!-- 					            <td>4.5</td> -->
+<!-- 					            <td>70</td> -->
+<!-- 					            <td>88</td> -->
+<!-- 					            <td></td> -->
+<!-- 				           </tr> -->
+<!-- 				           <tr bgcolor="#C8D6FF"> -->
+<!-- 					            <td height="25">2010春季</td> -->
+<!-- 					            <td>08T1370030</td> -->
+<!-- 					            <td>程序设计语言</td> -->
+<!-- 					            <td>赵岩</td> -->
+<!-- 					            <td>必修</td> -->
+<!-- 					            <td>4.5</td> -->
+<!-- 					            <td>70</td> -->
+<!-- 					            <td>88</td> -->
+<!-- 					            <td></td> -->
+<!-- 				           </tr> -->
 				      </tbody>
 				  </table>
 				</div>

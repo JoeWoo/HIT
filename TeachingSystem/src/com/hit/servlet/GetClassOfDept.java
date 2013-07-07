@@ -32,10 +32,24 @@ public class GetClassOfDept extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		String Did = request.getParameter("Did");
-		System.out.print(Did);
-		String sql = String.format("select distinct Sclass from Student where Did='%s'", Did);
+		String Mid = request.getParameter("Mid");
+		String Syear = request.getParameter("Syear");
+		String sql=new String("select distinct Sclass from Student where ");
+		if(Did!=null && !Did.equals("nochoose"))
+		{
+			sql += ("Did='"+Did+"' ");
+		}
+		if(Mid!=null && !Mid.equals("nochoose"))
+		{
+			sql += ("and Mid='"+Mid+"' ");
+		}
+		if(Syear!=null && !Syear.equals("nochoose"))
+		{
+			sql += ("and Syear='"+Syear+"' ");
+		}
+		System.out.print(sql);
 		ResultSet rs = DBControllor.excuteQuery(sql);
-		response.setContentType("text/htm;; charset=utf-8");
+		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
 		try {
 			while(rs.next()){

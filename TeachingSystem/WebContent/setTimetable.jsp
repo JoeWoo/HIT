@@ -19,13 +19,20 @@
 		var a=document.getElementById("class-input");
 		
 		alert(a.value);
-	}
+	};
 	var xmlhttp;
 	if (window.XMLHttpRequest){
 		xmlhttp=new XMLHttpRequest();
 	}
 	else{
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+	}
+	var xmlhttp1;
+	if (window.XMLHttpRequest){
+		xmlhttp1=new XMLHttpRequest();
+	}
+	else{
+		xmlhttp1=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 	var Did;
 	var chooseele="none";
@@ -38,16 +45,16 @@
 		  }
 		xmlhttp.open("GET","GetClassOfDept?Did="+Did,true);
 		xmlhttp.send();
-	}
+	};
 	var init_courseinput = function(){
 		xmlhttp.onreadystatechange=function(){
 			  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 				  document.getElementById("course-input").innerHTML = xmlhttp.responseText;
 			    }
-			  }
+			  };
 			xmlhttp.open("GET","GetCourseOfDept?Did="+Did,true);
 			xmlhttp.send();
-	}
+	};
 	var init = function(){
 		var data = new Array(7);
 		for(var i=0; i<7; i++)
@@ -58,7 +65,7 @@
 				data[i][j] = i+""+j;
 				document.getElementById(data[i][j]).setAttribute("onclick","changecolor('"+data[i][j]+"')") 
 			}
-	}
+	};
 	var changecolor = function(id){
 		var ele = document.getElementById(id);
 		if(ele.style.background=="red"){
@@ -71,50 +78,72 @@
 			ele.style.background="red";
 			chooseele = id;
 		}
-	}
+	};
 	
 	var getQueryString=function(name) {
 	    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
 	    var r = window.location.search.substr(1).match(reg);
 	    if (r != null) return unescape(r[2]); return null;
-	    }
+	    };
 	
 	var query = function(){
-		//alert('asd');
+		for(var i=0; i<5; i++)
+			for(var j=0; j<7; j++)
+			document.getElementById(j+''+i).innerHTML = "&nbsp;";
+		var Class;
 		var x2 = document.getElementById("class-input");
-		var Class = x2.options[x2.selectedIndex].value;
+		if(x2!=null)
+		Class = x2.options[x2.selectedIndex].value;
 		var Major = Class.substring(2,5);
 		xmlhttp.onreadystatechange=function(){
 			  if (xmlhttp.readyState==4 && xmlhttp.status==200){
-			    //document.getElementById("room-input").innerHTML=xmlhttp.responseText;
-			//	document.write(xmlhttp.responseText);
-			//	  alert("asd");
 			    eval(xmlhttp.responseText);
 			    }
-			  }
+			  };
 			xmlhttp.open("GET","CourseList?class="+Class+"&major="+Major,true);
 			xmlhttp.send();
 			var Tempid=getQueryString("Tempid");
-			document.getElementById("course-input").value=Tempid;
-	} 
-
+			//document.getElementById("course-input").value=Tempid;
+	};
+	var query1 = function(){
+		for(var i=0; i<5; i++)
+			for(var j=0; j<7; j++)
+			document.getElementById(j+''+i).innerHTML = "&nbsp;";
+		var coursetype;
+		var x2 = document.getElementById("coursetype-input");
+		if(x2!=null)
+		coursetype = x2.options[x2.selectedIndex].value;
+		//var Major = Class.substring(2,5);
+		xmlhttp.onreadystatechange=function(){
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			    eval(xmlhttp.responseText);
+			    }
+			  };
+			xmlhttp.open("GET","GetSpecialCourses",true);
+			xmlhttp.send();
+			var Tempid=getQueryString("Tempid");
+	};
+	var classChanged = function(){
+		for(var i=0; i<5; i++)
+		for(var j=0; j<7; j++)
+		document.getElementById(j+''+i).innerHTML = "&nbsp;";
+	};
 	var setCourse = function(id,value){
 		var ele = document.getElementById(id);
 		var info = value.split("#--#");
-		//alert(ele.innerHTML);
 		if(ele.innerHTML!="&nbsp;")
 			ele.innerHTML += "<hr/>";
 		ele.innerHTML += info[0]+"<br/>"+info[1]+"&nbsp;"+info[2]+"<br/>"+info[3]+"-"+info[4]+info[5];
-		
-	}
+	};
 	var arrange = function(){
-		
 		if(chooseele=="none"){
 			alert("请先选择一个课");
 			return;
 		}
 		var x2 = document.getElementById("class-input");
-		var Class = x2.options[x2.selectedIndex].value;
+		var Class = "0000";
+		if(x2)
+		Class = x2.options[x2.selectedIndex].value;
 		x2 = document.getElementById("course-input");
 		Tempid = x2.options[x2.selectedIndex].value;
 		x2 = document.getElementById("week1-input");
@@ -126,21 +155,50 @@
 		//alert("asds");
 		xmlhttp.onreadystatechange=function(){
 			  if (xmlhttp.readyState==4 && xmlhttp.status==200){
-			    //document.getElementById("room-input").innerHTML=xmlhttp.responseText;
-			//	document.write(xmlhttp.responseText);
-			//	  alert("asd");
-			alert('成功');
+				alert('成功');
+				if(Class!='0000')
+				query();
+				else query1();
 			    eval(xmlhttp.responseText);
 			    }
-			  }
+			  };
 			xmlhttp.open("GET","ArrangeCourse?Class="+Class+"&Tempid="+Tempid+"&Cstart="+Cstart+"&Cend="+Cend+"&Rname="+Rname+"&Ctime="+chooseele,true);
 			xmlhttp.send();
-	}
+	};
+	var reflashcourse = function(){
+		var x2 = document.getElementById("class-input");
+		var Class = x2.options[x2.selectedIndex].value;
+		xmlhttp1.onreadystatechange=function(){
+			  if (xmlhttp1.readyState==4 && xmlhttp.status==200){
+			    //eval(xmlhttp.responseText);
+			    document.getElementById("course-input").innerHTML = xmlhttp1.responseText;
+			    }
+			  };
+			xmlhttp1.open("GET","GetCoursesOfClass?Class="+Class,true);
+			xmlhttp1.send();
+	};
+	var reflashcourse1 = function(){
+		var x2 = document.getElementById("coursetype-input");
+		var coursetype = x2.options[x2.selectedIndex].value;
+		xmlhttp1.onreadystatechange=function(){
+			  if (xmlhttp1.readyState==4 && xmlhttp.status==200){
+			    //eval(xmlhttp.responseText);
+			    document.getElementById("course-input").innerHTML = xmlhttp1.responseText;
+			    }
+			  };
+			xmlhttp1.open("GET","GetCoursesOfType?type="+coursetype,true);
+			xmlhttp1.send();
+	};
 	</script>
 	<%
 		Administrator administrator = (Administrator)session.getAttribute("USER");
 	%>
-<body onload="init(); query()"> 
+	
+	<%if(administrator.getDid().equals("00")) {%>
+	<body onload="init();query1()">
+	<%}else { %>
+<body onload="init(); query()">
+<%} %> 
 	<span id="welcome"><%=administrator.getID() %> <%=administrator.getName() %> | <a id="title" href="">退出</a></span>
 	<div id="header">	
 			<a id="logo" href="http://www.hit.edu.cn">
@@ -153,9 +211,9 @@
 			<li><a href="./manageScores.jsp">成绩管理</a></li>
 			<li><a href="./manageTeacher.jsp">教师管理</a></li>
 			<li><a href="./manageComm.jsp">评教管理</a></li>
-			<li><a href="./manageAdmin.html">管理员管理</a></li>
+			<li><a href="./manageAdmin.jsp">管理员管理</a></li>
 			<li><a href="./changeManagePwd.html">修改密码</a></li>
-			<li><a href="./manageInfo.html">个人信息</a></li>
+			<li><a href="./manageInfo.jsp">个人信息</a></li>
 		</ul>
 	</div>		
 	<div id="content">
@@ -170,15 +228,21 @@
 					<div class="getIn"style="width:890px;height:60px;">
 						<div>
 						&nbsp;
+					<% String class0 = ""; 
+					if(!administrator.getDid().equals("00")){%>
 						<span class="week">班级：</span>
-						<select id="class-input"  name="class-input" dataType="Require"  msg="未选择班级"  onchange="query()">
+						<select id="class-input"  name="class-input" dataType="Require"  msg="未选择班级"  onchange="query();reflashcourse()">
                      	<%
                      	String sql = String.format("select distinct Sclass from Student where Did='%s'", administrator.getDid());
                 		ResultSet rs = DBControllor.excuteQuery(sql);
                 		try {
+                			int cnt = 0;
                 			while(rs.next()){
-                				String s = String.format("<option value='%s'>%s</option>", rs.getString("Sclass"),rs.getString("Sclass"));
+                				String Sclass =  rs.getString("Sclass");
+                				String s = String.format("<option value='%s'>%s</option>",Sclass,Sclass);
                 				out.print(s);
+                				cnt++;
+                				if(cnt==1) class0 = Sclass;
                 			}
                 		} catch (SQLException e) {
                 			// TODO Auto-generated catch block
@@ -188,12 +252,30 @@
 						</select>
 						&nbsp;
 						&nbsp;
+						<%}
+					else {
+					%>
+					<span class="week">课程类型：</span>
+					<select id="coursetype-input"  name="coursetype-input" dataType="Require"  msg="未选择班级"  onchange="reflashcourse1()">
+					<option value="2">全校任选</option>
+					<option value="3">英语</option>
+					<option value="4">体育</option>
+					</select>
+						<%} %>
 						<span class="week">课程名：</span>
 						<select id="course-input" name="course-input" dataType="Require" style="width:8em;" msg="未选择课程"  >
                         <%
                         String Did = administrator.getDid();
-                		sql = String.format("select Tempid,Cname from TempCourse inner join Course on TempCourse.Cid=Course.Cid inner join (select * from Major where Major.Did='%s') as M1 on M1.Mid=TempCourse.Mid where TempCourse.Term='%s'", Did,DataManager.getTerm());
-                		rs = DBControllor.excuteQuery(sql);
+                        String year = "";
+                        if(!Did.equals("00"))
+                        year = "20"+class0.substring(0,2);
+                		String sql = "";
+                		if(!Did.equals("00"))
+                		sql = String.format("select Tempid,Cname from TempCourse inner join Course on TempCourse.Cid=Course.Cid inner join (select * from Major where Major.Did='%s') as M1 on M1.Mid=TempCourse.Mid where TempCourse.Term='%s' and TempCourse.Syear='%s'", Did,DataManager.getTerm(),year);
+                		else 
+                			sql = String.format("select Tempid,Cname from TempCourse inner join Course on TempCourse.Cid=Course.Cid where TempCourse.Term='%s' and Ctype='%s'",DataManager.getTerm(),"2");
+                		System.out.print("##"+sql+"##\n");
+                		ResultSet rs = DBControllor.excuteQuery(sql);
                 		try {
                 			while(rs.next()){
                 				String s = String.format("<option value='%s'>%s</option>",rs.getString("Tempid"),rs.getString("Cname") );
@@ -236,9 +318,9 @@
                         %>
 						</select>
 						&nbsp;&nbsp;&nbsp;
-						<span class="week2">剩余课时数：</span>
-						<input id="chour-input" name="chour-input" style="width:75px;" dataType="Require" readonly="true" />
-						&nbsp;
+<!-- 						<span class="week2">剩余课时数：</span> -->
+<!-- 						<input id="chour-input" name="chour-input" style="width:75px;" dataType="Require" readonly="true" /> -->
+<!-- 						&nbsp; -->
 						<span class="week2">当前学期：</span>
 						<select id="term-input" name="term-input" dataType="Require"  msg="未选择学期"  >
                         <%

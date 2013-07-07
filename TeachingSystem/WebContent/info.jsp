@@ -90,7 +90,7 @@
 						</li>
 					</ul>
 			</div>
-				<form action="" id="query-input">	
+				<form action="StudentUpdateInfo" method="post" id="form1" name="form1">	
 					<div id="phone">
 						<div style="float:left">
 						<div id="part3">
@@ -98,8 +98,9 @@
 						</div>
 						<div class="item">
 							<span>&nbsp;联系电话：</span>
-							<input class="input2"name="telephone"type="text" value="<%=student.getTelephone()%>"/>
+							<input class="input2" name="telephone"type="text" value="<%=student.getTelephone()%>"/>
 							<br />
+							<input type="hidden" name="Sid" value="<%=student.getID() %>"/>
 							<span>&nbsp;电子邮件：</span>
 							<input class="input2" name="email" type="email" value="<%=student.getEmail()%>"/>
 					    </div>

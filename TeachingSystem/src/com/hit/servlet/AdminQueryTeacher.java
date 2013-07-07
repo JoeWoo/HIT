@@ -55,8 +55,8 @@ public class AdminQueryTeacher extends HttpServlet {
 			while(rs.next()){
 				String s = String.format("<tr id='row%d' bgcolor='#C8D6FF'><td height='25'>%s</td>" +
 						"<td>%s</td><td>%s</td><td>%s</td><td>%s</td>" +
-						"<td>%s</td><td>%s</td><td><a href='#' onclick='edit1(\"row%d\");return false;'>查看</a>&nbsp;" +
-						"<a href='#'>评教结果</a></td> </tr><input id='inforow%d' type='hidden' value='%s#%s#%s'>", row,
+						"<td>%s</td><td>%s</td><td><a href='#' onclick='edit1(\"row%d\");return false;'>编辑</a>&nbsp;" +
+						"</td> </tr><input id='inforow%d' type='hidden' value='%s#%s#%s'>", row,
 						rs.getString("Tid"),rs.getString("Tname"),rs.getString("Tsex"),rs.getString("Dname"),rs.getString("Ttitle"),
 						rs.getString("Ttelephone"),rs.getString("Temail"),row,row,rs.getString("Tbirthday"),rs.getString("TpersonID"),rs.getString("Did"));
 				row++;

@@ -13,10 +13,10 @@ var getTids = function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 		    document.getElementById("teacher-input").innerHTML="<option value='nochoose'>-未选择-</option>"+xmlhttp.responseText;
 		  }
-		  }
+		  };
 		xmlhttp.open("GET","GetTids?Did="+Did,true);
 		xmlhttp.send();
-}
+};
 
 var queryTeacher = function(){
 	
@@ -28,10 +28,10 @@ var queryTeacher = function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 		    document.getElementById("teacher-table").innerHTML=xmlhttp.responseText;
 		    }
-		  }
+		  };
 		xmlhttp.open("GET","AdminQueryTeacher?Did="+Did+"&Tid="+Tid,true);
 		xmlhttp.send();
-}
+};
 
 
 var edit1 = function(row){
@@ -62,7 +62,7 @@ var addTeacher = function(){
 	var temail = document.getElementById("Temail").value;
 	xmlhttp.onreadystatechange=function(){
 		if (xmlhttp.readyState==4 && xmlhttp.status==200){
-			alert("yes");
+			alert("添加成功");
 			//document.getElementById("teacher-table").innerHTML=xmlhttp.responseText;
 		}
 	};
@@ -92,4 +92,4 @@ var updateTeacher = function(){
 	xmlhttp.open("GET","UpdateTeacher?name="+tname+"&Tid="+tid+"&sex="+tsex+"&bir="+tbirthday
 			+"&personid="+tpersonID+"&Did="+did+"&title="+ttitle+"&tel="+ttelephone+"&email="+temail,true);
 	xmlhttp.send();
-}
+};

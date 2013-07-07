@@ -64,8 +64,9 @@ public class DBDeliver {
 				ID,password,name,email,telephone,personID,photo,sex,birthday,did,ttitle,initID);
 		return printSql(sql)||DBControllor.excuteUpdate(sql);
 	}
-	public static boolean updateTempCourse(String Tempid,String Cid,String Mid,String Tid,String Term){
-		String sql = String.format("update TempCourse set Cid='%s',Mid='%s',Tid='%s',Term='%s' where Tempid='%s'",Cid,Mid,Tid,Term,Tempid);
+	public static boolean updateTempCourse(String Tempid,String Cid,String Mid,String Tid,String Term,String Syear){
+		String sql = String.format("update TempCourse set Cid='%s',Mid='%s',Tid='%s',Term='%s',Syear='%s' where Tempid='%s'",Cid,Mid,Tid,Term,Syear,Tempid);
+		System.out.println(sql);
 		return printSql(sql)||DBControllor.excuteUpdate(sql);
 	}
 	public static ResultSet getStudentSet(String ID){
@@ -94,8 +95,8 @@ public class DBDeliver {
 	}
 	public static ResultSet getCourseInRoom(String Rname,String day,String num,String week){
 		String sql = String.format("select * from Cweek,Ctime,SCT,TempCourse,Course,Teacher " +
-				"where SCT.SCTid in (select CRoomArrange.SCTid from CRoomArrange where CRoomArrange.Rname='%s')" +
-				" and SCT.SCTid=Cweek.SCTid and SCT.SCTid=Ctime.SCTid and Cweek.Cstart<='%s' and Cweek.Cend>='%s' " +
+				"where SCT.SCTid in (select Cweek.SCTid from CRoomArrange inner join Cweek on Cweek.CweekID=CRoomArrange.CweekID where CRoomArrange.Rname='%s')" +
+				" and SCT.SCTid=Cweek.SCTid and Cweek.CweekID=Ctime.CweekID and Cweek.Cstart<='%s' and Cweek.Cend>='%s' " +
 				"and TempCourse.Tempid=SCT.Tempid and Course.Cid=TempCourse.Cid and Teacher.Tid=TempCourse.Tid " +
 				"and Cnum='%s' and Cday='%s' ", Rname,week,week,num,day);
 		return DBControllor.excuteQuery(sql);
@@ -105,7 +106,7 @@ public class DBDeliver {
 		return DBControllor.excuteUpdate(sql);
 	}
 	public static ResultSet getCourseTimeSet(String Rname,String Cweek){
-		String sql = String.format("select Cday,Cnum from Ctime inner join CRoomArrange on Ctime.SCTid = CRoomArrange.SCTid inner join Cweek on Ctime.SCTid = Cweek.SCTid where Rname='%s' and Cstart<=%s and Cend>=%s",Rname,Cweek,Cweek);
+		String sql = String.format("select Cday,Cnum from Ctime inner join CRoomArrange on Ctime.CweekID = CRoomArrange.CweekID inner join Cweek on Ctime.CweekID = Cweek.CweekID where Rname='%s' and Cstart<=%s and Cend>=%s",Rname,Cweek,Cweek);
 		return DBControllor.excuteQuery(sql);
 	}
 	public static ResultSet getCourseOfTeacher(String Tid){
@@ -113,9 +114,14 @@ public class DBDeliver {
 		return DBControllor.excuteQuery(sql);
 	}
 	public static ResultSet getCourseInfosSet(String Term,String Tid){
-		String sql = String.format("select Cnum,Cday,Cstart,Cend,Tname,Rname,Cname from (select * from TempCourse where Term='%s' ) as T1 inner join (select * from Teacher where Teacher.Tid='%s') as TT on TT.Tid=T1.Tid " +
-				"inner join (SCT inner join CRoomArrange on SCT.SCTid=CRoomArrange.SCTid) on T1.Tempid=SCT.Tempid,Cweek,Ctime,Course where Cweek.SCTid=SCT.SCTid and Course.Cid=T1.Cid and Ctime.SCTid=SCT.SCTid ",Term, Tid);
-		//printSql(sql);
+		//String sql = String.format("select Cnum,Cday,Cstart,Cend,Tname,Rname,Cname from (select * from TempCourse where Term='%s' ) as T1 inner join (select * from Teacher where Teacher.Tid='%s') as TT on TT.Tid=T1.Tid " +
+			//	"inner join (Cweek inner join CRoomArrange on Cweek.CweekID=CRoomArrange.CweekID) on Cweek.SCTid=SCT.SCTid,Ctime,Course where Cweek.SCTid=SCT.SCTid and Course.Cid=T1.Cid and Ctime.CweekID=Cweek.CweekID ",Term, Tid);
+		String sql = String.format("select Cnum,Cday,Cstart,Cend,Tname,Rname,Cname from TempCourse inner join SCT on " +
+				"TempCourse.Tempid=SCT.Tempid inner join Cweek on Cweek.SCTid=SCT.SCTid inner join Ctime on " +
+				"Ctime.CweekID=Cweek.CweekID inner join CRoomArrange on Cweek.CweekID=CRoomArrange.CweekID" +
+				" inner join Teacher on Teacher.Tid=TempCourse.Tid inner join Course on Course.Cid=TempCourse.Cid " +
+				"where Teacher.Tid='%s' and Term='%s'", Tid,Term);
+		printSql(sql);
 		return DBControllor.excuteQuery(sql);
 	}
 	public static boolean updatePwd(String ID, String password, String type) {
@@ -147,13 +153,26 @@ public class DBDeliver {
 		String sql = "select distinct Syear from Student order by Syear desc";
 		return DBControllor.excuteQuery(sql);
 	}
+	public static ResultSet getSyear() {
+		String sql = "select distinct top 5  Syear from Student order by Syear desc";
+		return DBControllor.excuteQuery(sql);
+	}
 	public static ResultSet getCourseListSet(String Clid,String Term){
 		String sql = String.format("select Cnum,Cday,Cstart,Cend,Tname,Rname,Cname from" +
-				" (select * from SCT where SCT.Clid='1037103') as S1 inner join (select * from TempCourse where TempCourse.Term='201201') " +
+				" (select * from SCT where SCT.Clid='%s') as S1 inner join (select * from TempCourse where TempCourse.Term='%s') " +
 				"as T1 on S1.Tempid = T1.Tempid inner join Course on T1.Cid=Course.Cid inner join Teacher " +
-				"on T1.Tid=Teacher.Tid ,Cweek,Ctime,CRoomArrange where S1.SCTid=Cweek.SCTid and S1.SCTid=Ctime.SCTid " +
-				"and S1.SCTid=CRoomArrange.SCTid ", Clid,Term);
-		//printSql(sql);
+				"on T1.Tid=Teacher.Tid ,Cweek,Ctime,CRoomArrange where S1.SCTid=Cweek.SCTid and Cweek.CweekID=Ctime.CweekID " +
+				"and Cweek.CweekID=CRoomArrange.CweekID ", Clid,Term);
+		printSql(sql);
+		return DBControllor.excuteQuery(sql);
+	}
+	public static ResultSet getSpecialCourseListSet(String Term){
+		String sql = String.format("select Cnum,Cday,Cstart,Cend,Tname,Rname,Cname from" +
+				" (select * from SCT where SCT.Clid='0000') as S1 inner join (select * from TempCourse where TempCourse.Term='%s') " +
+				"as T1 on S1.Tempid = T1.Tempid inner join Course on T1.Cid=Course.Cid inner join Teacher " +
+				"on T1.Tid=Teacher.Tid ,Cweek,Ctime,CRoomArrange where S1.SCTid=Cweek.SCTid and Cweek.CweekID=Ctime.CweekID " +
+				"and Cweek.CweekID=CRoomArrange.CweekID ",Term);
+		printSql(sql);
 		return DBControllor.excuteQuery(sql);
 	}
 	public static ResultSet getTeacherOfCourse(String ID){
@@ -176,8 +195,8 @@ public class DBDeliver {
 		String sql = "select top 1 Cid from Course order by Cid desc";
 		return DBControllor.excuteQuery(sql);
 	}
-	public static boolean insertTempCourse(String Cid,String Mid,String Tid,String Term){
-		String sql = String.format("insert into TempCourse(Cid,Mid,Tid,Term) values('%s','%s','%s','%s')",Cid,Mid,Tid,Term);
+	public static boolean insertTempCourse(String Cid,String Mid,String Tid,String Term,String Syear){
+		String sql = String.format("insert into TempCourse(Cid,Mid,Tid,Term,Syear) values('%s','%s','%s','%s','%s')",Cid,Mid,Tid,Term,Syear);
 		return DBControllor.excuteUpdate(sql);
 	}
 	public static  boolean judgeCommented(String Tempid,String Sid) throws SQLException{
@@ -219,5 +238,43 @@ public class DBDeliver {
 	private static boolean printSql(String sql){
 		System.out.println(sql);
 		return false;
+	}
+	public static ResultSet getAdminOfDept(String Did) {
+		String sql = String.format("select Aid from Administrator");
+		if(!Did.equals("00"))
+			sql+=String.format(" where Did='%s'", Did);
+		return DBControllor.excuteQuery(sql);
+	}
+	public static ResultSet getAdminInfos(String did,String aid){
+		String sql = "select * from Administrator inner join Dept on Administrator.Did=Dept.Did";
+		if(!did.equals("00")) sql+=String.format(" where Dept.Did='%s'",did);
+		if(!aid.equals("00")) sql+=String.format(" and Administrator.Aid='%s'", aid);
+		printSql(sql);
+		return DBControllor.excuteQuery(sql);
+	}
+	public static ResultSet getCoursesOfClass(String Class,String term) {
+		String sql = "select Tempid,Cname,Chour from TempCourse inner join Course on TempCourse.Cid=Course.Cid";
+		String Mid = Class.substring(2,5);
+		sql+=String.format(" where Mid='%s' and Term='%s' and Syear='%s'", Mid,term,"20"+Class.substring(0,2));
+		printSql(sql);
+		return DBControllor.excuteQuery(sql);
+	}
+	public static ResultSet getCoursesOfType(String type,String term) {
+		String sql = "select Tempid,Cname,Chour from TempCourse inner join Course on TempCourse.Cid=Course.Cid";
+		//String Mid = Class.substring(2,5);
+		sql+=String.format(" where Ctype='%s' and Term='%s'", type,term,"20");
+		printSql(sql);
+		return DBControllor.excuteQuery(sql);
+	}
+	public static void cancelChoosedCourse(String sid,String tempid) {
+		String sql = String.format("delete from SC where SC.Sid='%s' and Tempid='%s'",sid,tempid);
+		printSql(sql);
+		DBControllor.excuteUpdate(sql);
+	}
+	public static boolean judgeConfirmBixu(String sid,String term,String tempid) throws SQLException{
+		String sql = String.format("select * from SC inner join TempCourse on SC.Tempid=" +
+				"TempCourse.Tempid where SC.Sid='%s' and TempCourse.Term='%s' and SC.Tempid='%s'", sid,term,tempid);
+		ResultSet rs = DBControllor.excuteQuery(sql);
+		return rs.next();
 	}
 }

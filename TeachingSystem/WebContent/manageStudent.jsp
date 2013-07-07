@@ -55,13 +55,13 @@
 						&nbsp;
 			
 						<span class="week">专业：</span>
-						<select id="major-input" name="major-input" dataType="Require"  msg="未选择专业"  onchange="getSids()">
+						<select id="major-input" name="major-input" dataType="Require"  msg="未选择专业"  >
                         <option value="nochoose">-未选择-</option>
 						</select>
 						&nbsp;
 					
 						<span class="week">年级：</span>
-						<select id="year-input" name="major-input" dataType="Require"  msg="未选择学期"  >
+						<select id="year-input" name="major-input" dataType="Require"  msg="未选择年级" onchange="getClass(0)" >
                         <%
                         	int cnt = 0;
                         	for(String s:sList){
@@ -73,9 +73,9 @@
 						</select>
 						&nbsp;
 					
-						<span class="week">学号：</span>
-						<select id="Sid-input" name="major-input" dataType="Require"  msg="未选择学期"  >
-                        <option value="nochoose">-未选择-</option>
+						<span class="week">班级：</span>
+						<select id="class-input" name="major-input" dataType="Require"  msg="未选择学期"  >
+                   
 						</select>
 						&nbsp;
 					

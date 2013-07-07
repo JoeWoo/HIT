@@ -1,27 +1,25 @@
 package com.hit.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.ArrayList;
-
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.hit.DataControllor.DataManager;
-import com.hit.Entity.Dept;
+import com.hit.DataControllor.DBControllor;
 
 /**
- * Servlet implementation class GetDept
+ * Servlet implementation class TeacherDeleteChoose
  */
-public class GetDept extends HttpServlet {
+@WebServlet("/TeacherDeleteChoose")
+public class TeacherDeleteChoose extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetDept() {
+    public TeacherDeleteChoose() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,22 +29,10 @@ public class GetDept extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("application/javascript; charset=utf-8");
-		PrintWriter out = response.getWriter();
-		String Did = request.getParameter("Did");
-		//out.print("<option value='nochoose'>-未选择-</option>");
-		if(Did.equals("00")){
-			ArrayList<Dept> dList = DataManager.getAllDepts();
-			for(Dept dept:dList){
-				String s = String.format("<option value='%s'>%s</option>", dept.getDid(),dept.getDname());
-				out.print(s);
-			}
-		}else {
-			Dept dept = DataManager.getDeptByID(Did);
-			String s = String.format("<option value='%s'>%s</option>", dept.getDid(),dept.getDname());
-			out.print(s);
-		}
-		
+		String SCid = new String(request.getParameter("SCid").getBytes("ISO-8859-1"),"utf-8");
+		String sql = String.format("delete from SC where SCid='%s'",SCid);
+		System.out.print(sql);
+		DBControllor.excuteUpdate(sql);
 	}
 
 	/**

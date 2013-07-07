@@ -66,7 +66,7 @@
 					
 					</ul>
 				</div>	
-				<form action="ModifyInfo" id="query-input" method="get">	
+				<form action="TeacherUpdateInfo" id="form1" name="form1" method="post">	
 					<div id="phone" style="width: 250px ;margin-top:0px;margin-left: 50px;">
 						<div id="part3" style="width:250px">
 							<span>联系信息</span>
@@ -77,6 +77,7 @@
 								<span>&nbsp;院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</span><%=DataManager.getDeptNameByID(teacher.getDid()) %><br />
 								<span>&nbsp;联系电话：</span>
 								<input id="telephone" class="input2" style="width:120px"name="telephone"type="text" value="<%=teacher.getTelephone() %>"/>
+								<input id="Tid" name="Tid" type="hidden" value="<%=teacher.getID() %>"/>
 								<br />
 								<span>&nbsp;电子邮件：</span>
 								<input id="email" class="input2" style="width:120px"name="email" type="email" value='<%=teacher.getEmail() %>'/>

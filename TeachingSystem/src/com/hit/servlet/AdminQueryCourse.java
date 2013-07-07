@@ -39,11 +39,11 @@ public class AdminQueryCourse extends HttpServlet {
 		String Mid = request.getParameter("Mid");
 		String Did = request.getParameter("Did");
 		String Term = request.getParameter("Term");
-		String sql = String.format("select Course.Cid,Cname,Dname,Mname,Dept.Did,Major.Mid,Tname,Teacher.Tid,Ctype,Chour,Ccredit,Cproperty,Tempid " +
+		String sql = String.format("select Course.Cid,Cname,Dname,Mname,Dept.Did,Major.Mid,Tname,Teacher.Tid,Ctype,Chour,Ccredit,Cproperty,Tempid,Syear " +
 		"from(select * from TempCourse where TempCourse.Term='%s') " +
 		"as T1 inner join Teacher on T1.Tid = Teacher.Tid inner join " +
 		"(Major inner join Dept on Major.Did=Dept.Did) on T1.Mid = Major.Mid inner join Course on " +
-		"T1.Cid = Course.Cid where",Term);
+		"T1.Cid = Course.Cid where ",Term);
 		boolean flag = false;
 		if(!Ctype.equals("0")){
 			sql+=String.format("Ctype='%s'",Ctype);
@@ -81,12 +81,12 @@ public class AdminQueryCourse extends HttpServlet {
 			rs.getString("Cproperty"));
 			if(ff)
 				s0+=String.format("<a href='' onclick='edit(\"%d\"); return false;'>╠Ю╪╜</a>&nbsp;"+
-			"&nbsp;</td> </tr><input id='info%d' type='hidden' value='%s#%s#%s#%s#%s'/>",
-			row,row++,rs.getString("Tid"),rs.getString("Ctype"),rs.getString("Did"),rs.getString("Mid"),rs.getString("Tempid"));
+			"&nbsp;</td> </tr><input id='info%d' type='hidden' value='%s#%s#%s#%s#%s#%s'/>",
+			row,row++,rs.getString("Tid"),rs.getString("Ctype"),rs.getString("Did"),rs.getString("Mid"),rs.getString("Tempid"),rs.getString("Syear"));
 			else 
-				s0+=String.format("<a href='setTimetable.jsp?Tempid=%s&Cid=%s&Cname=%s&Tid=%s' return false;'>ее©н</a>&nbsp;"+
-						"&nbsp;</td> </tr><input id='info%d' type='hidden' value='%s#%s#%s#%s#%s'/>",
-						rs.getString("Tempid"),rs.getString("Cid"),rs.getString("Cname"),rs.getString("Tid"),row++,rs.getString("Tid"),rs.getString("Ctype"),rs.getString("Did"),rs.getString("Mid"),rs.getString("Tempid"));
+				s0+=String.format("<a href='setTimetable.jsp?Tempid=%s&Cid=%s&Cname=%s&Tid=%s&Syear=%s' return false;'>ее©н</a>&nbsp;"+
+						"&nbsp;</td> </tr><input id='info%d' type='hidden' value='%s#%s#%s#%s#%s#%s'/>",
+						rs.getString("Tempid"),rs.getString("Cid"),rs.getString("Cname"),rs.getString("Tid"),rs.getString("Syear"),row++,rs.getString("Tid"),rs.getString("Ctype"),rs.getString("Did"),rs.getString("Mid"),rs.getString("Tempid"),rs.getString("Syear"));
 			out.print(s0);
 			}
 		} catch (SQLException e) {

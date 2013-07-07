@@ -31,8 +31,12 @@ public class AddCourse extends HttpServlet {
 		//String cid = DataManager.getCid();
 		//request.setCharacterEncoding("utf-8");
 		String cid = new String(request.getParameter("Cid").getBytes("ISO-8859-1"),"utf-8");
+		System.out.print(request.getParameter("Cname"));
 		String cname = new String(request.getParameter("Cname").getBytes("ISO-8859-1"),"utf-8");
-		//System.out.print(cname);
+		cname = cname.replace("гл", "+");
+		//cname.re
+		System.out.print("\n##"+cname+"##\n");
+		
 		String ctype = new String(request.getParameter("Ctype").getBytes("ISO-8859-1"),"utf-8");
 		//System.out.print(request.getParameter("Chour"));
 		int chour = Integer.parseInt(request.getParameter("Chour"));
@@ -41,12 +45,13 @@ public class AddCourse extends HttpServlet {
 		String Mid = request.getParameter("Major");
 		String Tid = request.getParameter("Teacher");
 		String term = DataManager.getTerm();
+		String Syear = new String(request.getParameter("Syear").getBytes("ISO-8859-1"),"utf-8");
 		if(!DataManager.judgeCourseInDB(cid, cname, ccredit+"", chour+"", ctype, cproperty)){
 			System.out.print("asddsada");
 			cid = DataManager.getCid();
 			DBDeliver.insertCourse(cid, cname, ctype, chour, ccredit, cproperty);
 		}
-		DataManager.putIntoTempCourse(cid, Mid, Tid,term);
+		DataManager.putIntoTempCourse(cid, Mid, Tid,term,Syear);
 		
 		
 	}

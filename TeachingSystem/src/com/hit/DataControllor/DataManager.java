@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
+import com.hit.Entity.AdminInfo;
 import com.hit.Entity.Administrator;
 import com.hit.Entity.Course;
 import com.hit.Entity.CourseInfo;
@@ -245,6 +246,27 @@ public class DataManager {
 			return null;
 		}
 	}
+	public static ArrayList<CourseInfo> getSpecialCourseInfos(String Term){
+		ResultSet rs = DBDeliver.getSpecialCourseListSet(Term);
+		ArrayList<CourseInfo> cList = new ArrayList<CourseInfo>();
+		try {
+			while(rs.next()){
+				String cname = rs.getString("Cname");
+				String tname = rs.getString("Tname");
+				String rname = rs.getString("Rname");
+				int cstart = rs.getInt("Cstart");
+				int cend = rs.getInt("Cend");
+				int cday = rs.getInt("Cday");
+				int cnum = rs.getInt("Cnum");
+				cList.add(new CourseInfo(cname, tname, rname, cstart, cend, cday, cnum));
+			}
+			return cList;
+		} catch (SQLException e) {
+			printErr("getCourseInfos³ö´í");
+			e.printStackTrace();
+			return null;
+		}
+	}
 	private static Dept getDeptFromRS(ResultSet rs){
 		try {
 			
@@ -273,7 +295,6 @@ public class DataManager {
 	}
 	public static ArrayList<CourseInfo> getCourseInfosOfTeacher(String Term,String Tid) {
 		ResultSet rs = DBDeliver.getCourseInfosSet(Term, Tid);
-		System.out.print("asdsa");
 		ArrayList<CourseInfo> cList = new ArrayList<CourseInfo>();
 		try {
 			while(rs.next()){
@@ -370,11 +391,19 @@ public class DataManager {
 		}
 		return year + season;
 	}
-	public static void putIntoTempCourse(String Cid,String Mid,String Tid,String Term){
-		DBDeliver.insertTempCourse(Cid, Mid, Tid,Term);
+	public static void putIntoTempCourse(String Cid,String Mid,String Tid,String Term,String Syear){
+		DBDeliver.insertTempCourse(Cid, Mid, Tid,Term,Syear);
 	}
-	public static void updateTempCourse(String Tempid,String Cid,String Mid,String Tid,String Term){
-		DBDeliver.updateTempCourse(Tempid,Cid,Mid,Tid,Term);
+	public static void updateTempCourse(String Tempid,String Cid,String Mid,String Tid,String Term,String Syear){
+		DBDeliver.updateTempCourse(Tempid,Cid,Mid,Tid,Term,Syear);
+	}
+	public static ArrayList<String> getAdminOfDept(String Did) throws SQLException {
+		ResultSet rs = DBDeliver.getAdminOfDept(Did);
+		ArrayList<String> result = new ArrayList<String>();
+		while (rs.next()) {
+			result.add(rs.getString("Aid"));
+		}
+		return result;
 	}
 	public static ArrayList<String> getTermList() {
 		ResultSet rs = DBDeliver.getTermSet();
@@ -393,6 +422,25 @@ public class DataManager {
 //	public static ArrayList<StuRecord> getStuRecords(String Tid,String Term,String Cid){
 //		
 //	}
+	public static ArrayList<AdminInfo> getAdminInfos(String did,String aid) throws SQLException{
+		ResultSet rs = DBDeliver.getAdminInfos(did, aid);
+		ArrayList<AdminInfo> result = new ArrayList<AdminInfo>();
+		while(rs.next()){
+			String aid1 = rs.getString("aid");
+			String did1 = rs.getString("Did");
+			String aname = rs.getString("Aname");
+			String asex = rs.getString("Asex");
+			String dname = rs.getString("Dname");
+			String telephone = rs.getString("Atelephone");
+			String email = rs.getString("Aemail");
+			String personID = rs.getString("ApersonID");
+			String photo = rs.getString("Aphoto");
+			String birthday = rs.getString("Abirthday");
+			AdminInfo ai = new AdminInfo(aid1, aname, asex, dname, telephone, email, did1, personID, photo, birthday);
+			result.add(ai);
+		}
+		return result;
+	}
 	public static ArrayList<String> getYears(){
 		ResultSet rs = DBDeliver.getYearsSet();
 		ArrayList<String> sList = new ArrayList<String>();
@@ -404,6 +452,42 @@ public class DataManager {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			printErr("getYears³ö´í");
+			return sList;
+		}
+	}
+	public static ArrayList<String>getCoursesOfClass(String Class) throws SQLException{
+		ArrayList<String> result = new ArrayList<String>();
+		ResultSet rs = DBDeliver.getCoursesOfClass(Class,getTerm());
+		while(rs.next()){
+			String tempid = rs.getString("Tempid");
+			String name = rs.getString("Cname");
+			String hour = rs.getString("Chour");
+			result.add(tempid+"@@@"+name+"@@@"+hour);
+		}
+		return result;
+	}
+	public static ArrayList<String>getCoursesOfType(String type) throws SQLException{
+		ArrayList<String> result = new ArrayList<String>();
+		ResultSet rs = DBDeliver.getCoursesOfType(type,getTerm());
+		while(rs.next()){
+			String tempid = rs.getString("Tempid");
+			String name = rs.getString("Cname");
+			String hour = rs.getString("Chour");
+			result.add(tempid+"@@@"+name+"@@@"+hour);
+		}
+		return result;
+	}
+		public static ArrayList<String> getSyear(){
+		ResultSet rs = DBDeliver.getSyear();
+		ArrayList<String> sList = new ArrayList<String>();
+		try {
+			while(rs.next()){
+				sList.add(rs.getString("Syear"));
+			}
+			return sList;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			printErr("getSyear³ö´í");
 			return sList;
 		}
 	}
@@ -427,7 +511,11 @@ public class DataManager {
 			return false;
 		}
 	}
+	public static String getLevel(String tid,String term,String tempid) {
+		return "A";
+	}
 	private static void printErr(String s){
 		System.out.println(s);
 	}
+	
 }

@@ -6,10 +6,13 @@ var xmlhttp;
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 var init_page = function(Did){
+	//alert('zz');
 	if(Did!="00"){
 		var right = document.getElementById("right");
+		if(right)
 		right.style.display = "none";
 	}
+	
 	xmlhttp.onreadystatechange=function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 		    document.getElementById("dept-input").innerHTML="<option value='nochoose'>-未选择-</option>"+xmlhttp.responseText;
@@ -19,6 +22,7 @@ var init_page = function(Did){
 		    if(document.getElementById("dept-input-right")!=null)
 		    document.getElementById("dept-input-right").innerHTML = "<option value='nochoose'>-未选择-</option>"+xmlhttp.responseText;
 		    }
+		 // alert('zz');
 		  };
 		xmlhttp.open("GET","GetDept?Did="+Did,true);
 		xmlhttp.send();
@@ -54,13 +58,14 @@ var getMajor2 = function(flag){
 			  else 
 				  document.getElementById("dept-input-right").innerHTML=xmlhttp.responseText; 
 		    }
-		  }
+		  };
 		xmlhttp.open("GET","GetMajorOfDept?Did="+Did,true);
 		xmlhttp.send();
 };
 var addCourse = function(){
 	var Cid = document.getElementById("Cid").value;
 	var Cname = document.getElementById("Cname").value;
+	Cname = Cname.replace(/\+/g,'＋');
 	var Ccredit = document.getElementById("Ccredit").value;
 	var Chour = document.getElementById("Chour").value;
 	var Teacher = document.getElementById("Teacher").value;
@@ -74,18 +79,21 @@ var addCourse = function(){
 	var Cproperty = select.options[select.selectedIndex].value;
 	select = document.getElementById("term-input-right");
 	var Term = select.options[select.selectedIndex].value;
+	select = document.getElementById("syear-input-right");
+	var Syear = select.options[select.selectedIndex].value;
 	xmlhttp.onreadystatechange=function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 			  alert("添加成功!");
 		    }
 		  };
 		xmlhttp.open("GET","AddCourse?Cname="+Cname+"&Ccredit="+Ccredit+"&Chour="+Chour+"&Teacher="+Teacher
-				+"&Major="+Major+"&Ctype="+Ctype+"&Cproperty="+Cproperty+"&Term="+Term+"&Cid="+Cid,true);
+				+"&Major="+Major+"&Ctype="+Ctype+"&Cproperty="+Cproperty+"&Term="+Term+"&Cid="+Cid+"&Syear="+Syear,true);
 		xmlhttp.send();
 };
 var updateCourse = function(){
 	var Cid = document.getElementById("Cid").value;
 	var Cname = document.getElementById("Cname").value;
+	Cname = Cname.replace(/\+/g,'＋');
 	var Ccredit = document.getElementById("Ccredit").value;
 	var Chour = document.getElementById("Chour").value;
 	var Teacher = document.getElementById("Teacher").value;
@@ -100,15 +108,18 @@ var updateCourse = function(){
 	select = document.getElementById("term-input-right");
 	var Tempid = document.getElementById("Tempid").value; 
 	var Term = select.options[select.selectedIndex].value;
+	select = document.getElementById("syear-input-right");
+	var Syear = select.options[select.selectedIndex].value;
 	xmlhttp.onreadystatechange=function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 			  alert("更新成功!");
 		    }
 		  };
-		xmlhttp.open("GET","UpdateCourse?Cname="+Cname+"&Ccredit="+Ccredit+"&Chour="+Chour+"&Teacher="+Teacher
-				+"&Major="+Major+"&Ctype="+Ctype+"&Cproperty="+Cproperty+"&Term="+Term+"&Cid="+Cid+"&Tempid="+Tempid,true);
+		  var url = URLEncode("UpdateCourse?"+"Ccredit="+Ccredit+"&Chour="+Chour+"&Teacher="+Teacher
+					+"&Major="+Major+"&Ctype="+Ctype+"&Cproperty="+Cproperty+"&Term="+Term+"&Cid="+Cid+"&Tempid="+Tempid+"&Syear="+Syear+"&Cname='"+Cname+"'");
+		xmlhttp.open("GET",url,true);
 		xmlhttp.send();
-}
+};
 var queryCourse = function(){
 	var select = document.getElementById("style-input");
 	var ctype = select.options[select.selectedIndex].value;
@@ -153,8 +164,10 @@ var edit = function(row){
 	document.getElementById("dept-input-right").style.borderColor="blue";
 	getMajor(1);
 	document.getElementById("major-input-right").value = result[3];
+	document.getElementById("syear-input-right").value = result[5];
 	document.getElementById("major-input-right").style.borderColor="blue";
 	document.getElementById("term-input-right").style.borderColor="blue";
+	document.getElementById("syear-input-right").style.borderColor="blue";
 	document.getElementById("Tempid").value=result[4];
 	//alert(result[1]);
 	

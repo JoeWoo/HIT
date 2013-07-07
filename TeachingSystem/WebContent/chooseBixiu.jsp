@@ -1,3 +1,4 @@
+<%@page import="com.hit.DataControllor.DBDeliver"%>
 <%@page import="com.hit.DataControllor.DBControllor"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="com.hit.DataControllor.DataManager"%>
@@ -58,13 +59,13 @@
 					        String sql = String.format("select T1.Tempid,Course.Cid,Cname,Tname,Ctype,Chour,Ccredit,Cproperty " +
 									"from (select * from TempCourse where TempCourse.Mid='%s' " +
 									"and Term='%s') as T1 inner join Course on T1.Cid=Course.Cid " +
-									"inner join Teacher on T1.Tid=Teacher.Tid where Ctype='1' ",student.getMid(),DataManager.getTerm());
-					       		ResultSet rs = DBControllor.excuteQuery(sql);
+									"inner join Teacher on T1.Tid=Teacher.Tid where Ctype='1' and T1.Syear='%s'",student.getMid(),DataManager.getTerm(),student.getSyear());
+					       		System.out.print(sql);
+					        	ResultSet rs = DBControllor.excuteQuery(sql);
 					       		int cnt = 0;
 					       		while(rs.next()){
 					        %>
-				       		<tr bgcolor="#C8D6FF">
-					           
+				       		<tr bgcolor="#C8D6FF" id="<%=rs.getString("Tempid")%>">
 					            <td height="25"><%=rs.getString("Tempid") %></td>
 					            <td><%=rs.getString("Cname") %></td>
 					            <td><%=rs.getString("Tname") %></td>
@@ -72,10 +73,12 @@
 					            <td><%=rs.getString("Chour") %></td>
 					            <td><%=rs.getString("Ccredit") %></td>
 					            <td><%=rs.getString("Cproperty").equals("1")?"考试":"考察" %></td>
-					            <td>
-
-					            	&nbsp;<a href="" onclick="choose(<%=++cnt%>);return false;">确认</a>
-					            	
+					            <td id="<%=rs.getString("Tempid")%>_button">
+					            <%if(!DBDeliver.judgeConfirmBixu(student.getID(), DataManager.getTerm(), rs.getString("Tempid"))){ %>
+					            	&nbsp;<a href="javascript:void(0)" onclick="choose('<%=rs.getString("Tempid")%>')">确认</a>
+					            	<%}else {%>
+					            	已确认
+					            	<%} %>
 					            </td>
 				           </tr> 
 				           <%} %> 

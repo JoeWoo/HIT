@@ -12,17 +12,38 @@ var queryStudent = function(){
 	var Mid = select.options[select.selectedIndex].value;
 	select = document.getElementById("year-input");
 	var Syear = select.options[select.selectedIndex].value;
-	select = document.getElementById("Sid-input");
-	var Sid = select.options[select.selectedIndex].value;
+	select = document.getElementById("class-input");
+	var Sclass = select.options[select.selectedIndex].value;
 	xmlhttp.onreadystatechange=function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 		    document.getElementById("student_table").innerHTML=xmlhttp.responseText;
 		    document.getElementById("dept-input-right").innerHTML = "<option value='nochoose'>-閺堫亪锟介幏锟�/option>"+xmlhttp.responseText;
 		    }
-		  }
-		xmlhttp.open("GET","AdminQueryStudent?Did="+Did+"&Mid="+Mid+"&Syear="+Syear+"&Sid="+Sid,true);
+		  };
+		xmlhttp.open("GET","AdminQueryStudent?Did="+Did+"&Mid="+Mid+"&Syear="+Syear+"&Sclass="+Sclass,true);
 		xmlhttp.send();
-}
+};
+var getClass = function(flag){
+	var select;
+	if(flag==0)
+	{
+		select = document.getElementById("dept-input");
+		var Did=select.options[select.selectedIndex].value;
+		select = document.getElementById("major-input");
+		var Major = select.options[select.selectedIndex].value;
+		select = document.getElementById("year-input");
+		var Syear = select.options[select.selectedIndex].value;
+		xmlhttp.onreadystatechange=function(){
+			  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			    document.getElementById("class-input").innerHTML="<option value='nochoose'>-未选择-</option>"+xmlhttp.responseText;
+			  }
+		};
+			xmlhttp.open("GET","GetClassOfDept?Did="+Did+"&Mid="+Major+"&Syear="+Syear,true);
+			xmlhttp.send();	
+	
+	}
+};
+
 var edit = function(row){
 	var line = document.getElementById(row);
 	document.getElementById("Sid").value = line.cells[0].innerText;
@@ -47,10 +68,10 @@ var edit = function(row){
 		    document.getElementById("Mid").innerHTML="<option value='nochoose'>-鏈�鎷�</option>"+xmlhttp.responseText;
 		    document.getElementById("Mid").value=Mid;  
 		  }
-		  }
+		  };
 	xmlhttp.open("GET","GetMajorOfDept?Did="+Did,true);
 	xmlhttp.send();
-}
+};
 
 var getSids = function(){
 	var select = document.getElementById("major-input");
@@ -62,10 +83,10 @@ var getSids = function(){
 		    document.getElementById("student_table").innerHTML=xmlhttp.responseText;
 		    document.getElementById("dept-input-right").innerHTML = "<option value='nochoose'>-閺堫亪锟介幏锟�/option>"+xmlhttp.responseText;
 		    }
-		  }
+		  };
 		xmlhttp.open("GET","GetSids?Mid="+Mid+"&Syear="+Syear+"&Sid="+Sid,true);
 		xmlhttp.send();
-}
+};
 
 var addStudent = function(){
 	var Sid = document.getElementById("Sid").value;
@@ -84,13 +105,13 @@ var addStudent = function(){
 	
 	xmlhttp.onreadystatechange=function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
-		    alert("yes");
+		    alert("添加成功");
 		    }
-		  }
+		  };
 	
 		xmlhttp.open("GET","AddStudents?Sid="+Sid+"&Syear="+Syear+"&Sname="+Sname+"&Ssex="+Ssex+"&Sbirthday="+Sbirthday+"&SpersonID="+SpersonID+"&Stelephone="+Stelephone+"&Sclass="+Sclass+"&Semail="+Semail+"&Saddress="+Saddress+"&Mid="+Mid+"&Did="+Did,true);
 		xmlhttp.send();
-}
+};
 
 var updateStudent = function(){
 	var Sid = document.getElementById("Sid").value;
@@ -111,8 +132,8 @@ var updateStudent = function(){
 		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 		    alert("yes");
 		    }
-		  }
+		  };
 	
 		xmlhttp.open("GET","UpdateStudents?Sid="+Sid+"&Syear="+Syear+"&Sname="+Sname+"&Ssex="+Ssex+"&Sbirthday="+Sbirthday+"&SpersonID="+SpersonID+"&Stelephone="+Stelephone+"&Sclass="+Sclass+"&Semail="+Semail+"&Saddress="+Saddress+"&Mid="+Mid+"&Did="+Did,true);
 		xmlhttp.send();
-}
+};

@@ -5,23 +5,26 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.hit.DataControllor.DBControllor;
 import com.hit.DataControllor.DataManager;
-import com.hit.Entity.Dept;
+import com.hit.Entity.CourseInfo;
 
 /**
- * Servlet implementation class GetDept
+ * Servlet implementation class GetSpecialCourses
  */
-public class GetDept extends HttpServlet {
+@WebServlet("/GetSpecialCourses")
+public class GetSpecialCourses extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetDept() {
+    public GetSpecialCourses() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,22 +34,18 @@ public class GetDept extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		if(!DBControllor.isConnected())
+			DBControllor.connctTo("TeachingDB");
 		response.setContentType("application/javascript; charset=utf-8");
+		String Term = DataManager.getTerm();
+		ArrayList<CourseInfo> cList = DataManager.getSpecialCourseInfos(Term);
 		PrintWriter out = response.getWriter();
-		String Did = request.getParameter("Did");
-		//out.print("<option value='nochoose'>-æœªé€‰æ‹©-</option>");
-		if(Did.equals("00")){
-			ArrayList<Dept> dList = DataManager.getAllDepts();
-			for(Dept dept:dList){
-				String s = String.format("<option value='%s'>%s</option>", dept.getDid(),dept.getDname());
-				out.print(s);
-			}
-		}else {
-			Dept dept = DataManager.getDeptByID(Did);
-			String s = String.format("<option value='%s'>%s</option>", dept.getDid(),dept.getDname());
-			out.print(s);
+		//out.print("<script type='text/javascript'>");
+		for(CourseInfo cInfo:cList){
+			String ID = cInfo.getCday()+""+cInfo.getCnum();
+			String value = cInfo.getCname()+"#--#"+cInfo.getTname()+"#--#"+cInfo.getRname()+"#--#"+cInfo.getCstart()+"#--#"+cInfo.getCend()+"#--#ÖÜ";
+			out.print("setCourse('"+ID+"','"+value+"');");
 		}
-		
 	}
 
 	/**

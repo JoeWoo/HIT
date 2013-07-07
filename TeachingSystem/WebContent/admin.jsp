@@ -186,6 +186,21 @@
 				</li>
 				<li>
 					<span class="aside-icon"></span>
+					<span>年&nbsp;&nbsp;&nbsp;&nbsp;级：</span>
+					<select id="syear-input-right" class="input2" style="width:120px"name="Sname"type="text" >
+					 <%
+					    	ArrayList<String> sList = DataManager.getSyear();
+					    	for(int i=0; i<sList.size() ; i++){
+					    		
+					    %>
+					    <option value="<%=sList.get(i) %>"><%=sList.get(i) %></option>
+					    <%
+					    }
+					    %>
+					</select>
+				</li>
+				<li>
+					<span class="aside-icon"></span>
 					<span>类&nbsp;&nbsp;&nbsp;&nbsp;型：</span>
 					<select id="Ctype" class="input2" style="width:120px"name="Sname"type="text" >
 						<option value="1">必修</option>

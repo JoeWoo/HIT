@@ -78,7 +78,7 @@
 				        </tr>
 				        <tr>
 				          <td height="140"><div><strong>1-2节</strong></div></td>
-				          <td id="10">&nbsp;英  语<br/>王王王   正心12 <br />1-13周<hr/>.net程序设计<br/>王王王   正心12 <br />1-13周 <hr />.net程序设计<br/>王王王   正心12 <br />1-13周</td>
+				          <td id="10">&nbsp;</td>
 				          <td id="20">&nbsp;</td>
 				          <td id="30">&nbsp;</td>
 				          <td id="40">&nbsp;</td>

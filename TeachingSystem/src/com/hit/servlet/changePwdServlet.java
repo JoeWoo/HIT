@@ -54,24 +54,24 @@ public class changePwdServlet extends HttpServlet {
 			
 			
 		}
-		if(DBDeliver.checkLogin(username, password, table)){
-			if(table.equals("Student")){
-				Student student = DataManager.getStudentByID(username);
-				session.setAttribute("USER", "Student");
-			}else if(table.equals("Teacher")){
-				Teacher teacher = DataManager.getTeacherByID(username);
-				session.setAttribute("USER", "Teacher");
-			}else {
-				Administrator administrator = DataManager.getAdministratorByID(username);
-				session.setAttribute("USER", "Administrator");
-			}
-		}else {
-			
-		}
-		boolean result = DBDeliver.updatePwd(id, password2, type);
-		if(!result){
-			
-		}
+//		if(DBDeliver.checkLogin(username, password, table)){
+//			if(table.equals("Student")){
+//				Student student = DataManager.getStudentByID(username);
+//				session.setAttribute("USER", "Student");
+//			}else if(table.equals("Teacher")){
+//				Teacher teacher = DataManager.getTeacherByID(username);
+//				session.setAttribute("USER", "Teacher");
+//			}else {
+//				Administrator administrator = DataManager.getAdministratorByID(username);
+//				session.setAttribute("USER", "Administrator");
+//			}
+//		}else {
+//			
+//		}
+//		boolean result = DBDeliver.updatePwd(id, password2, type);
+//		if(!result){
+//			
+//		}
 
 	}
 

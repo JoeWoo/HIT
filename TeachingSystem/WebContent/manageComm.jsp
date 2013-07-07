@@ -12,13 +12,14 @@
 	<link rel="stylesheet" type="text/css" href="./css/student.css" />
 	<script type="text/javascript" src="js/admin.js"></script>
 	<script type="text/javascript" src="js/manageTeacher.js"></script>
+	<script type="text/javascript" src="js/manageComm.js"></script>
 </head>
 
 <%
 		Administrator administrator = (Administrator)session.getAttribute("USER");
 ArrayList<String> sList = DataManager.getYears();
 %>
-<body onload="init_page('<%=administrator.getDid() %>')">
+<body onload="init_page('<%=administrator.getDid() %>');init_comm('<%=administrator.getDid() %>')">
 	<span id="welcome"><%=administrator.getID() %> <%=administrator.getName() %> | <a id="title" href="">退出</a></span>
 	<div id="header">	
 			<a id="logo" href="http://www.hit.edu.cn">
@@ -33,7 +34,7 @@ ArrayList<String> sList = DataManager.getYears();
 			<li><a href="./manageComm.jsp"class="navActive">评教管理</a></li>
 			<li><a href="./manageAdmin.jsp">管理员管理</a></li>
 			<li><a href="./changeManagePwd.html">修改密码</a></li>
-			<li><a href="./manageInfo.html">个人信息</a></li>
+			<li><a href="./manageInfo.jsp">个人信息</a></li>
 		</ul>
 	</div>		
 	<div id="content">
@@ -77,7 +78,7 @@ ArrayList<String> sList = DataManager.getYears();
 						&nbsp;
 						&nbsp;
 					
-						<input  name="submit" value="查询"type="button" onclick="queryComm()">
+						<input  name="submit" value="查询"type="button" onclick="queryComm()"/>
 						</div>
 						
 					</div>
@@ -86,66 +87,7 @@ ArrayList<String> sList = DataManager.getYears();
 				<div id="biao1" >
 					<table  id="scorestable"border="1" cellpadding="0" cellspacing="0">
 				        <tbody id="comment-table">
-				        	<tr bgcolor="#CCCCCC">
-					            <td height="28"><div><strong>学期</strong></div></td>
-					            <td><div><strong>课程号</strong></div></td>
-					            <td width="25%"><div><strong>课程名</strong></div></td>
-					            <td width="10%"><div><strong>授课教师</strong></div></td>
-					            <td><div><strong>类别</strong></div></td>
-					            <td><div><strong>学分</strong></div></td>
-					            <td><div><strong>学时</strong></div></td>
-					            <td><div><strong>教学评价</strong></div></td>
-					            <td><div><strong>备注</strong></div></td>
-					        </tr>
-				       		<tr bgcolor="#C8D6FF">
-					            <td height="25">2010秋季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>A</td>
-					            <td></td>
-					            
-				           </tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010秋季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>A</td>
-					            <td></td>
-					            
-				           </tr>
-				           <tr><td colspan="10" height="10">&nbsp;</td></tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010春季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>B</td>
-					            <td></td>
-					            
-				           </tr>
-				           <tr bgcolor="#C8D6FF">
-					            <td height="25">2010春季</td>
-					            <td>08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>必修</td>
-					            <td>4.5</td>
-					            <td>70</td>
-					            <td>B</td>
-					            <td></td>
-					            
-				           </tr>
+				        	
 				      </tbody>
 				  </table>	
 				</div>

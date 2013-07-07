@@ -2,26 +2,28 @@ package com.hit.servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.hit.DataControllor.DataManager;
-import com.hit.Entity.Dept;
 
 /**
- * Servlet implementation class GetDept
+ * Servlet implementation class GetCoursesOfType
  */
-public class GetDept extends HttpServlet {
+@WebServlet("/GetCoursesOfType")
+public class GetCoursesOfType extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetDept() {
+    public GetCoursesOfType() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -31,22 +33,21 @@ public class GetDept extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.setContentType("application/javascript; charset=utf-8");
+		String type = new String(request.getParameter("type").getBytes("ISO-8859-1"),"utf-8");
+		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();
-		String Did = request.getParameter("Did");
-		//out.print("<option value='nochoose'>-未选择-</option>");
-		if(Did.equals("00")){
-			ArrayList<Dept> dList = DataManager.getAllDepts();
-			for(Dept dept:dList){
-				String s = String.format("<option value='%s'>%s</option>", dept.getDid(),dept.getDname());
-				out.print(s);
+		try {
+			ArrayList<String> result = DataManager.getCoursesOfType(type);
+			for(String info:result){
+				String[] tmp = info.split("@@@");
+				String tmp0 = String.format("<option value='%s'>%s<input type='hidden' id='%s' value='%s'>" +
+						"</option>", tmp[0],tmp[1],tmp[0],tmp[2]);
+				out.print(tmp0);
 			}
-		}else {
-			Dept dept = DataManager.getDeptByID(Did);
-			String s = String.format("<option value='%s'>%s</option>", dept.getDid(),dept.getDname());
-			out.print(s);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
 	}
 
 	/**

@@ -37,6 +37,7 @@ public class DBControllor {
 	public static ResultSet excuteQuery(String sql) {
 		try {
 			ResultSet rs;
+			Statement st = con.createStatement();
 			rs = st.executeQuery(sql);
 			return rs;
 		} catch (SQLException e) {

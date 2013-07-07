@@ -91,7 +91,15 @@ var queryComment = function(){
 		xmlhttp.open("GET","GetComments?Tid="+Tid+"&Term="+Term+"&Cid="+Cid,true);
 		xmlhttp.send();
 }
-
+var deletechoose = function(scid){
+	xmlhttp.onreadystatechange=function(){
+		  if (xmlhttp.readyState==4 && xmlhttp.status==200){
+			  alert("yes");
+		    }
+		  }
+		xmlhttp.open("GET","TeacherDeleteChoose?SCid="+scid,true);
+		xmlhttp.send();
+}
 var showscores = function(scores){
 	var table = document.getElementById("scorestable");
 	for(var i=1; i<=10; i++){

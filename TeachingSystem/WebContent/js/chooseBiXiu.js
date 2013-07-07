@@ -7,16 +7,15 @@ var xmlhttp;
 		xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
 	}
 var choose = function(id){
-	alert("asd");
-	var table = document.getElementById("coursetable");
-	var Tempid = table.rows[id].cells[0].innerText;
+	var Tempid = id;
 	xmlhttp.onreadystatechange=function(){
 			  if (xmlhttp.readyState==4 && xmlhttp.status==200){
 				  alert("确认成功");
+				  document.getElementById(id+"_button").innerText = "已确认";
 				//  document.getElementById("course-input").innerHTML = xmlhttp.responseText;
 			    
 			  }
-			  }
+			  };
 		xmlhttp.open("GET","ChooseCourse?Tempid="+Tempid,true);
 		xmlhttp.send();
-}
+};

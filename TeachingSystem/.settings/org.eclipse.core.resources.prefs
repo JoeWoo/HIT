@@ -1,5 +1,6 @@
-#Sun Jun 30 18:30:26 CST 2013
 eclipse.preferences.version=1
 encoding//WebContent/js/admin.js=UTF-8
+encoding//WebContent/js/manageAdmin.js=UTF-8
 encoding//WebContent/js/manageStudent.js=UTF-8
 encoding//WebContent/js/manageTeacher.js=UTF-8
+encoding//src/com/hit/servlet/AdminQueryComm.java=UTF-8

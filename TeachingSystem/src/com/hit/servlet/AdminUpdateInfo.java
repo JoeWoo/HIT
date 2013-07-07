@@ -1,11 +1,8 @@
 package com.hit.servlet;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,15 +10,16 @@ import javax.servlet.http.HttpServletResponse;
 import com.hit.DataControllor.DBControllor;
 
 /**
- * Servlet implementation class GetTids
+ * Servlet implementation class AdminUpdateInfo
  */
-public class GetTids extends HttpServlet {
+@WebServlet("/AdminUpdateInfo")
+public class AdminUpdateInfo extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public GetTids() {
+    public AdminUpdateInfo() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -30,19 +28,7 @@ public class GetTids extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String Did = new String(request.getParameter("Did").getBytes("ISO-8859-1"),"utf-8");
-		System.out.print(Did);
-		ResultSet rs = DBControllor.excuteQuery("select Tid from Teacher where Did='"+Did+"'");
-		response.setContentType("text/html; charset=utf-8");
-		PrintWriter out = response.getWriter();
-		try {
-			while(rs.next()){
-				String s = String.format("<option value='%s'>%s</option>", rs.getString("Tid"),rs.getString("Tid"));
-				out.print(s);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+		// TODO Auto-generated method stub
 	}
 
 	/**
@@ -50,6 +36,17 @@ public class GetTids extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
+		if(!DBControllor.isConnected())
+        	DBControllor.connctTo("TeachingDB");
+		String Atelephone = new String (request.getParameter("telephone").getBytes("ISO-8859-1"),"utf-8");
+		String Aemail = new String (request.getParameter("email").getBytes("ISO-8859-1"),"utf-8");
+		//String Taddress = new String (request.getParameter("address").getBytes("ISO-8859-1"),"utf-8");
+		String Aid = new String (request.getParameter("Aid").getBytes("ISO-8859-1"),"utf-8"); 
+		String sql = String.format("update Administrator set Atelephone='%s',Aemail='%s' where Aid='%s'"
+				,Atelephone,Aemail,Aid);
+		System.out.print(sql);
+		DBControllor.excuteUpdate(sql);
+		response.sendRedirect("login.html");
 	}
 
 }

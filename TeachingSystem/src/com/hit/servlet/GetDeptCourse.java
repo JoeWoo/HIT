@@ -35,7 +35,7 @@ public class GetDeptCourse extends HttpServlet {
 		String Term = request.getParameter("Term");
 		String Tid = request.getParameter("Tid");
 		String Mid = request.getParameter("Mid");
-		String sql = String.format("select TempCourse.Term,Major.Mname, TempCourse.Mid,TempCourse.Cid,Dept.Dname,Course.Cname,Course.Ctype,Course.Chour,Course.Ccredit,Course.Cproperty from TempCourse inner join Course on TempCourse.Cid=Course.Cid inner join Major on Major.Mid=TempCourse.Mid inner join Dept on Major.Did=Dept.Did inner join SC on TempCourse.Tempid=SC.Tempid where Term='%s' and TempCourse.Mid='%s' and Tid='%s'", Term,Mid,Tid);
+		String sql = String.format("select TempCourse.Term,Major.Mname, TempCourse.Mid,TempCourse.Cid,Dept.Dname,Course.Cname,Course.Ctype,Course.Chour,Course.Ccredit,Course.Cproperty from TempCourse inner join Course on TempCourse.Cid=Course.Cid inner join Major on Major.Mid=TempCourse.Mid inner join Dept on Major.Did=Dept.Did where Term='%s' and TempCourse.Mid='%s' and Tid='%s'", Term,Mid,Tid);
 		System.out.print(sql);
 		response.setContentType("text/html; charset=utf-8");
 		PrintWriter out = response.getWriter();

@@ -30,7 +30,7 @@
 			<li><a href="./manageComm.jsp">评教管理</a></li>
 			<li><a href="./manageAdmin.jsp">管理员管理</a></li>
 			<li><a href="./changeManagePwd.html">修改密码</a></li>
-			<li><a href="./manageInfo.html">个人信息</a></li>
+			<li><a href="./manageInfo.jsp">个人信息</a></li>
 		</ul>
 	</div>		
 	<div id="content">

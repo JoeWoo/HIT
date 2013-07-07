@@ -34,7 +34,7 @@ public class GetStudentOfTeacher extends HttpServlet {
 		String Tid = request.getParameter("Tid");
 		String Cid = request.getParameter("Cid");
 		String Term = request.getParameter("Term");
-		String sql = String.format("select Student.Sid,Student.Sname,Dept.Dname,Major.Mname,Score " +
+		String sql = String.format("select Student.Sid,Student.Sname,Dept.Dname,Major.Mname,Score,flag,SCid " +
 				"from (select * from TempCourse where TempCourse.Cid='%s' and TempCourse.Term='%s' " +
 				"and TempCourse.Tid='%s') as T1 inner join  (SC inner join Student on SC.Sid=Student.Sid) on " +
 				"SC.Tempid=T1.Tempid inner join (Major inner join Dept on Major.Did=Dept.Did) on T1.Mid=Major.Mid", Cid,Term,Tid);
@@ -50,11 +50,23 @@ public class GetStudentOfTeacher extends HttpServlet {
 		try {
 			int cnt = 1;
 			while(rs.next()){
+				if(rs.getString("flag").equals("0"))
+				{
 				String s = String.format("<tr bgcolor='#C8D6FF'> <td height='25'>%d</td><td>%s</td>" +
 						"<td>%s</td> <td>%s</td> <td>%s</td>  <td>%s</td>" +
-						"<td>&nbsp;<a href=''>解除选课</a> </td></tr>", 
-						cnt++,rs.getString("Sid"),rs.getString("Sname"),rs.getString("Dname"),rs.getString("Mname"),rs.getString("Score"));
+						"<td>&nbsp;<a href='#' onclick='deletechoose(%s)' >解除选课</a> </td></tr>", 
+						cnt++,rs.getString("Sid"),rs.getString("Sname"),rs.getString("Dname"),rs.getString("Mname"),rs.getString("Score"),rs.getString("SCid"));
 				out.print(s);
+				}
+				else
+				{
+					String s = String.format("<tr bgcolor='#C8D6FF'> <td height='25'>%d</td><td>%s</td>" +
+							"<td>%s</td> <td>%s</td> <td>%s</td>  <td>%s</td>" +
+							"<td>&nbsp;</td></tr>", 
+							cnt++,rs.getString("Sid"),rs.getString("Sname"),rs.getString("Dname"),rs.getString("Mname"),rs.getString("Score"));
+					out.print(s);
+				}
+				
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

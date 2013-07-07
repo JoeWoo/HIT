@@ -7,11 +7,13 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title></title>
 	<link rel="stylesheet" type="text/css" href="./css/student.css" />
+	<script type="text/javascript" src="js/manageAdmin.js"></script>
+	<script type="text/javascript" src="js/admin.js"></script>
 	</head>
 	<%
 		Administrator administrator = (Administrator)session.getAttribute("USER");
 	%>
-<body>
+<body onload="init_page('<%=administrator.getDid() %>')">
 	<span id="welcome"><%=administrator.getID() %> <%=administrator.getName() %> | <a id="title" href="">退出</a></span>
 	<div id="header">	
 			<a id="logo" href="http://www.hit.edu.cn">
@@ -26,7 +28,7 @@
 			<li><a href="./manageComm.jsp">评教管理</a></li>
 			<li><a href="./manageAdmin.jsp" class="navActive">管理员管理</a></li>
 			<li><a href="./changeManagePwd.html">修改密码</a></li>
-			<li><a href="./manageInfo.html">个人信息</a></li>
+			<li><a href="./manageInfo.jsp">个人信息</a></li>
 		</ul>
 	</div>		
 	<div id="content">
@@ -41,24 +43,23 @@
 						<div>
 						&nbsp;
 						<span class="week">院系：</span>
-						<select id="dept-input" name="dept-input" >
-                        <option value="1">软件学院</option>
-                       
+						<select id="dept-input" name="dept-input" onchange="getAdmins()">
+                        <option value="1">-未选择-</option>
 						</select>
 					    &nbsp;
 						<span class="week">帐号：</span>
-						<select id="major-input" name="major-input" >
-                        <option value="0"><option>
-                        <option value="1">1103710321</option>
+						<select id="admin-input" name="admin-input" >
+                        <option value="0">-未选择-<option>
+<!--                         <option value="1">1103710321</option> -->
 						</select>
 						&nbsp;
-						<input id="submit" name="submit" value="查询"type="submit">
+						<input id="submit" name="submit" value="查询"type="button" onclick="queryAdmin()"/>
 						</div>
 						
 					</div>
 				
 				<div id="biao">
-					<table  id="scorestable" style="width:610px;" border="1" cellpadding="0" cellspacing="0">
+					<table  id="admin-table" style="width:610px;" border="1" cellpadding="0" cellspacing="0">
 				        <tbody>
 				        	<tr bgcolor="#CCCCCC">
 					            <td height="28"><div><strong>帐号</strong></div></td>
@@ -71,17 +72,7 @@
 					        </tr>
 				       		<tr bgcolor="#C8D6FF">
 					           
-					            <td height="25">1103710321</td>
-					            <td>邓胜春</td>
-					            <td>男</td>
-					            <td>软件学院</td> 
-					            <td>103711203</td>
-					            <td>wujian_hit@126.com</td>
-					            <td>
-					            	<a href="">更改</a>
-					            	&nbsp;<a href="">删除</a>
-					      
-					            </td>
+					           
 				           </tr>
 				         
 				      </tbody>
@@ -99,19 +90,19 @@
 				<li>
 					<span class="aside-icon"></span>
 					<span>姓&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;名：</span>
-					<input class="input2" style="width:120px"name="Sname"type="text" />
+					<input id="Aname" class="input2" style="width:120px"name="Aname"type="text" />
 				</li>	
 				<li>
 					<span class="aside-icon"></span>
-					<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><input class="input2" style="width:120px"name="Ssex"type="text" />
+					<span>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</span><input id="Asex" class="input2" style="width:120px"name="Asex"type="text" />
 				</li>
 				<li>
 					<span class="aside-icon"></span>
-					<span>出生日期：</span><input class="input2" style="width:120px"name="Sbirthday"type="text" />
+					<span>出生日期：</span><input id="Abirthday" class="input2" style="width:120px"name="Abirthday"type="text" />
 				</li>
 				<li>
 					<span class="aside-icon"></span>
-					<span>身份证号：</span><input class="input2" style="width:120px"name="SpersonID"type="text" />
+					<span>身份证号：</span><input id="ApersonID" class="input2" style="width:120px"name="ApersonID"type="text" />
 				</li>
 				</ul>
 			</div>	
@@ -122,11 +113,15 @@
 						</li>	
 						<li>
 							<span class="aside-icon"></span>
-							<span>帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</span><input class="input2" style="width:120px"name="Sid"type="text" />
+							<span>帐&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;号：</span><input id="Aid" class="input2" style="width:120px"name="Aid"type="text" />
 						</li>
 						<li>
 							<span class="aside-icon"></span>
-							<span>院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</span><input class="input2" style="width:120px"name="dept"type="text" />
+							<span>院&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;系：</span>
+<!-- 							<input class="input2" style="width:120px"name="dept"type="text" /> -->
+							<select id="dept-input-right" name="dept-input" onchange="getAdmins()">
+                        <option value="1">-未选择-</option>
+						</select>
 						</li>
 						
 					</ul>
@@ -139,10 +134,10 @@
 					<div style="float:left">
 						<div class="item" style="margin-top: 10px;width:145px">
 							<span>&nbsp;联系电话：</span>
-							<input class="input2" style="width:120px"name="telephone"type="text" />
+							<input id="Atelephone" class="input2" style="width:120px"name="telephone"type="text" />
 							<br />
 							<span>&nbsp;电子邮件：</span>
-							<input class="input2" style="width:120px"name="email" type="email" />
+							<input id="Aemail" class="input2" style="width:120px"name="email" type="email" />
 							
 						</div>
 					</div>
@@ -155,8 +150,8 @@
 			
 
 			<div class="clear"></div>
-			<input type="submit" class="submit1" style="margin-left:20px; float:left;width:97px;"value="确认修改"/>
-			<input type="submit" class="submit1" style="margin-left:55px;float:left;width:97px;"value="添加"/>	
+			<input type="submit" class="submit1" style="margin-left:20px; float:left;width:97px;" value="确认修改" onclick="updateAdmin()"/>
+			<input type="button" class="submit1" style="margin-left:55px;float:left;width:97px;" value="添加" onclick="addAdmin()"/>	
 					
 		</div>
 		</div>

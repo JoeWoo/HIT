@@ -1,3 +1,6 @@
+<%@page import="com.hit.DataControllor.DBControllor"%>
+<%@page import="com.hit.DataControllor.DataManager"%>
+<%@page import="java.sql.ResultSet"%>
 <%@page import="com.hit.Entity.Student"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -6,16 +9,18 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title></title>
-	<link rel="stylesheet" type="text/css" href="./css/student.css">
+	<link rel="stylesheet" type="text/css" href="./css/student.css"/>
+	<script type="text/javascript" src="js/chooseSpecialCourse.js"> 
 	<script type="text/javascript"> 
   
 </script> 
 	</head>
-<body><%
+<%
 	Student student = (Student)session.getAttribute("USER");
 %>
-<body>
+<body onload='init()'>
 	<span id="welcome"><%=student.getID() %> <%=student.getName() %> | <a id="title" href="">退出</a></span>
+	<input type="hidden" value="<%=student.getID() %>" id="sid"/>
 	<div id="header">	
 			<a id="logo" href="http://www.hit.edu.cn">
 				<img src="./pics/hit.png" alt="" />
@@ -51,21 +56,30 @@
 					            <td><div><strong>备注</strong></div></td>
 					            <td><div><strong>操作</strong></div></td>
 					        </tr>
-				       		<tr bgcolor="#C8D6FF">
-					           
-					            <td height="25">08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>全校任选</td>
-					            <td>70</td>
-					            <td>4</td>
+					         <%
+					        String sql = "select distinct Tempid,Course.Cid,Cname,Tname,Chour,Ccredit from TempCourse"+
+					        " inner join Course on Course.Cid=TempCourse.Cid inner join Teacher on Teacher.Tid=TempCourse.Tid ";
+					         sql+=String.format(" where Ctype='3' and Term='%s'", DataManager.getTerm());
+					        System.out.print(sql);
+					        ResultSet rs = DBControllor.excuteQuery(sql);
+					        while(rs.next()){%>
+					        	<tr bgcolor="#C8D6FF" id="<%=rs.getString("Tempid")%>">
+					            <td height="25"><%=rs.getString("Cid") %></td>
+					            <td><%=rs.getString("Cname") %></td>
+					            <td><%=rs.getString("Tname") %></td>
+					            <td>英语</td>
+					            <td><%=rs.getString("Chour") %></td>
+					            <td><%=rs.getString("Ccredit") %></td>
 					            <td></td>
 					            <td>
 					            	<a href="">详细信息</a>
-					            	&nbsp;<a href="">选课</a>
+					            	&nbsp;<a id="<%=rs.getString("Tempid")%>_button" href="javascript:void(0)" onclick="beforeChoose(3);choose(<%=rs.getString("Tempid")%>)">选课</a>
 					            	
 					            </td>
 				           </tr>  
+					        <%
+					        }
+					        %>
 				      </tbody>
 				  </table>
 				</div>
@@ -75,7 +89,7 @@
 				
 				<div id="biao" style="overflow: auto">
 					<table  id="scorestable2" style="width:610px;" border="1" cellpadding="0" cellspacing="0">
-				        <tbody>
+				        <tbody id="haschoosed">
 				        	<tr bgcolor="#CCCCCC">
 					            <td height="28"><div><strong>课程号</strong></div></td>
 					            <td ><div><strong>课程名</strong></div></td>
@@ -86,21 +100,29 @@
 					            <td><div><strong>备注</strong></div></td>
 					            <td><div><strong>操作</strong></div></td>
 					        </tr>
-				       		<tr bgcolor="#C8D6FF">
-					           
-					            <td height="25">08T1370030</td>
-					            <td>程序设计语言</td>
-					            <td>赵岩</td>
-					            <td>全校任选</td>
-					            <td>70</td>
-					            <td>4</td>
+				       		<%
+					        sql = "select SC.Tempid,Course.Cid,Cname,Tname,Chour,Ccredit from SC inner join Student on Student.Sid=SC.Sid"+
+					        " inner join TempCourse on SC.Tempid=TempCourse.Tempid inner join "
+					        +"Course on TempCourse.Cid=Course.Cid inner join Teacher on Teacher.Tid"+
+					        "=TempCourse.Tid";
+					        sql+=String.format(" where SC.Sid='%s' and Term='%s' and Ctype='3'" , student.getID(), DataManager.getTerm());
+					        rs = DBControllor.excuteQuery(sql);
+					        while(rs.next()){%>
+				       		<tr bgcolor="#C8D6FF" id="<%=rs.getString("Tempid")%>_choosed">
+					            <td height="25"><%=rs.getString("Cid") %></td>
+					            <td><%=rs.getString("Cname") %></td>
+					            <td><%=rs.getString("Tname") %></td>
+					            <td>英语</td>
+					            <td><%=rs.getString("Chour") %></td>
+					            <td><%=rs.getString("Ccredit") %></td>
 					            <td></td>
 					            <td>
 					            	<a href="">详细信息</a>
-					            	&nbsp;<a href="">取消选课</a>
+					            	&nbsp;<a href="javascript:void(0)" onclick="cancelChoose(<%=rs.getString("Tempid")%>)">取消选课</a>
 					            	
 					            </td>
 				           </tr>  
+<%} %>
 				      </tbody>
 				  </table>
 

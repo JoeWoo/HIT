@@ -1,3 +1,6 @@
+<%@page import="com.hit.DataControllor.DataManager"%>
+<%@page import="com.hit.DataControllor.DBControllor"%>
+<%@page import="java.sql.ResultSet"%>
 <%@page import="com.hit.Entity.Student"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
     pageEncoding="utf-8"%>
@@ -38,23 +41,22 @@
 					<span>选课结果</span>
 				</h2>
 				<form action="" id="query-input">	
-					<div class="getIn">
-						<div>
-						&nbsp;
-						<span class="week">学期：</span>
-						<select id="class-input" name="class-input" dataType="Require"  msg="未选择学期"  >
-                        <option value="all">全部学期</option>
-                        <option value="201001">201001</option>
-                        <option value="201002">201001</option>
-                        <option value="201101">201001</option>
-                        <option value="201102">201001</option>
-						</select>
-						&nbsp;
-						&nbsp;
-						<input id="submit" name="submit" value="查询"type="submit">
-						</div>
+<!-- 					<div class="getIn"> -->
+<!-- 						<div> -->
+<!-- 						&nbsp; -->
+<!-- 						<span class="week">学期：</span> -->
+<!-- 						<select id="class-input" name="class-input" dataType="Require"  msg="未选择学期"  > -->
+<!--                         <option value="201001">201001</option> -->
+<!--                         <option value="201002">201001</option> -->
+<!--                         <option value="201101">201001</option> -->
+<!--                         <option value="201102">201001</option> -->
+<!-- 						</select> -->
+<!-- 						&nbsp; -->
+<!-- 						&nbsp; -->
+<!-- 						<input id="submit" name="submit" value="查询"type="submit"/> -->
+<!-- 						</div> -->
 						
-					</div>
+<!-- 					</div> -->
 
 				</form>
 				<h3 style="text-align: center;height:5px;color: #444">必修课选课结果</h3>
@@ -67,23 +69,51 @@
 					            <td ><div><strong>授课教师</strong></div></td>
 					            <td><div><strong>学时</strong></div></td>
 					            <td><div><strong>学分</strong></div></td>
-					            <td><div><strong>起止周</strong></div></td>
+<!-- 					            <td><div><strong>起止周</strong></div></td> -->
 					            <td><div><strong>上课时间与教室</strong></div></td>
 					             <td><div><strong>备注</strong></div></td>
-
 					        </tr>
+					        <%
+					        	String sql = "select distinct Course.Cid,Cname,Tname,Chour,Ccredit,SC.Tempid from SC inner join TempCourse on SC.Tempid=TempCourse.Tempid"+
+					        	" inner join Course on Course.Cid=TempCourse.Cid inner join Teacher on Teacher.Tid="
+					        	+"TempCourse.Tid";
+					        	sql+=String.format(" where SC.Sid='%s' and TempCourse.Term='%s' and Ctype='1'", student.getID(),
+					        			DataManager.getTerm());
+					        	ResultSet rs = DBControllor.excuteQuery(sql);
+					        	while(rs.next()){
+					         %>
 				       		<tr bgcolor="#C8D6FF">
-					           
-					            <td height="25">08T1370030</td>
-					            <td>程序设计语言</td>
-					            
-					            <td>全校任选</td>
-					            <td>70</td>
-					            <td>4</td>
-					            <td>1-12</td>
-					            <td>周一1-2节 正心22 <br />周三5-6节 致知12	</td>
+					            <td height="25"><%=rs.getString("Cid") %></td>
+					            <td><%=rs.getString("Cname") %></td>
+					            <td><%=rs.getString("Tname") %></td>
+					            <td><%=rs.getString("Chour") %></td>
+					            <td><%=rs.getString("Ccredit") %></td>
+					            <% String tempid = rs.getString("Tempid");
+					            	sql = "select Cday,Cnum,Rname,Cstart,Cend from SCT inner join Cweek on SCT.SCTid=Cweek.SCTid inner "+
+					            	"join Ctime on Ctime.CweekID=Cweek.CweekID inner join CRoomArrange on Cweek.CweekID="+
+					            	"CRoomArrange.CweekID";
+					            	sql+=String.format(" where SCT.Tempid='%s'", rs.getString("Tempid"));
+					            	//System.out.print(sql);
+					            	ResultSet rs1 = DBControllor.excuteQuery(sql);
+					            %>
+<!-- 					            <td>1-12</td> -->
+					            <td>
+					            <%
+					            String[] weekday = {"周日","周一","周二","周三","周四","周五","周六"};
+					            String[] num = {"1-2节","3-4节","5-6节","7-8节","9-10节"};
+					            boolean yes = false;
+					            while(rs1.next()){ yes=true; %>
+					            <%=weekday[Integer.parseInt(rs1.getString("Cday"))] %>
+					            <%=num[Integer.parseInt(rs1.getString("Cnum"))] %> 
+					            <%=rs1.getString("Rname") %> 
+					            	第<%=rs1.getString("Cstart") %>周-第<%=rs1.getString("Cend") %>周<br />
+					            <%} if(!yes){%>
+					            <%="未定" %>
+					            <%} %>
+					            </td>
 					            <td></td>
 				           </tr>  
+				           <%} %>
 				      </tbody>
 				  </table>
 				</div>
@@ -97,23 +127,52 @@
 					            <td ><div><strong>授课教师</strong></div></td>
 					            <td><div><strong>学时</strong></div></td>
 					            <td><div><strong>学分</strong></div></td>
-					            <td><div><strong>起止周</strong></div></td>
+<!-- 					            <td><div><strong>起止周</strong></div></td> -->
 					            <td><div><strong>上课时间与教室</strong></div></td>
 					             <td><div><strong>备注</strong></div></td>
 
 					        </tr>
+				       		<%
+					        	 sql = "select distinct Course.Cid,Cname,Tname,Chour,Ccredit,SC.Tempid from SC inner join TempCourse on SC.Tempid=TempCourse.Tempid"+
+					        	" inner join Course on Course.Cid=TempCourse.Cid inner join Teacher on Teacher.Tid="
+					        	+"TempCourse.Tid";
+					        	sql+=String.format(" where SC.Sid='%s' and TempCourse.Term='%s' and Ctype='3'", student.getID(),
+					        			DataManager.getTerm());
+					        	 rs = DBControllor.excuteQuery(sql);
+					        	while(rs.next()){
+					         %>
 				       		<tr bgcolor="#C8D6FF">
-					           
-					            <td height="25">08T1370030</td>
-					            <td>程序设计语言</td>
-					            
-					            <td>全校任选</td>
-					            <td>70</td>
-					            <td>4</td>
-					            <td>1-12</td>
-					            <td>周一1-2节 正心22 <br />周三5-6节 致知12	</td>
+					            <td height="25"><%=rs.getString("Cid") %></td>
+					            <td><%=rs.getString("Cname") %></td>
+					            <td><%=rs.getString("Tname") %></td>
+					            <td><%=rs.getString("Chour") %></td>
+					            <td><%=rs.getString("Ccredit") %></td>
+					            <% String tempid = rs.getString("Tempid");
+					            	sql = "select Cday,Cnum,Rname,Cstart,Cend from SCT inner join Cweek on SCT.SCTid=Cweek.SCTid inner "+
+					            	"join Ctime on Ctime.CweekID=Cweek.CweekID inner join CRoomArrange on Cweek.CweekID="+
+					            	"CRoomArrange.CweekID";
+					            	sql+=String.format(" where SCT.Tempid='%s'", rs.getString("Tempid"));
+					            	//System.out.print(sql);
+					            	ResultSet rs1 = DBControllor.excuteQuery(sql);
+					            %>
+<!-- 					            <td>1-12</td> -->
+					            <td>
+					            <%
+					            String[] weekday = {"周日","周一","周二","周三","周四","周五","周六"};
+					            String[] num = {"1-2节","3-4节","5-6节","7-8节","9-10节"};
+					            boolean yes = false;
+					            while(rs1.next()){ yes=true;%>
+					            <%=weekday[Integer.parseInt(rs1.getString("Cday"))] %>
+					            <%=num[Integer.parseInt(rs1.getString("Cnum"))] %> 
+					            <%=rs1.getString("Rname") %> 
+					            	第<%=rs1.getString("Cstart") %>周-第<%=rs1.getString("Cend") %>周<br />
+					            <%} if(!yes){%>
+					            <%="未定" %>
+					            <%} %>
+					            </td>
 					            <td></td>
 				           </tr>  
+				           <%} %>
 				      </tbody>
 				  </table>
 				</div>
@@ -127,23 +186,51 @@
 					            <td ><div><strong>授课教师</strong></div></td>
 					            <td><div><strong>学时</strong></div></td>
 					            <td><div><strong>学分</strong></div></td>
-					            <td><div><strong>起止周</strong></div></td>
+<!-- 					            <td><div><strong>起止周</strong></div></td> -->
 					            <td><div><strong>上课时间与教室</strong></div></td>
 					             <td><div><strong>备注</strong></div></td>
-
 					        </tr>
+				       		<%
+					        	 sql = "select distinct Course.Cid,Cname,Tname,Chour,Ccredit,SC.Tempid from SC inner join TempCourse on SC.Tempid=TempCourse.Tempid"+
+					        	" inner join Course on Course.Cid=TempCourse.Cid inner join Teacher on Teacher.Tid="
+					        	+"TempCourse.Tid";
+					        	sql+=String.format(" where SC.Sid='%s' and TempCourse.Term='%s' and Ctype='4'", student.getID(),
+					        			DataManager.getTerm());
+					        	 rs = DBControllor.excuteQuery(sql);
+					        	while(rs.next()){
+					         %>
 				       		<tr bgcolor="#C8D6FF">
-					           
-					            <td height="25">08T1370030</td>
-					            <td>程序设计语言</td>
-					            
-					            <td>全校任选</td>
-					            <td>70</td>
-					            <td>4</td>
-					            <td>1-12</td>
-					            <td>周一1-2节 正心22 <br />周三5-6节 致知12	</td>
+					            <td height="25"><%=rs.getString("Cid") %></td>
+					            <td><%=rs.getString("Cname") %></td>
+					            <td><%=rs.getString("Tname") %></td>
+					            <td><%=rs.getString("Chour") %></td>
+					            <td><%=rs.getString("Ccredit") %></td>
+					            <% String tempid = rs.getString("Tempid");
+					            	sql = "select Cday,Cnum,Rname,Cstart,Cend from SCT inner join Cweek on SCT.SCTid=Cweek.SCTid inner "+
+					            	"join Ctime on Ctime.CweekID=Cweek.CweekID inner join CRoomArrange on Cweek.CweekID="+
+					            	"CRoomArrange.CweekID";
+					            	sql+=String.format(" where SCT.Tempid='%s'", rs.getString("Tempid"));
+					            	//System.out.print(sql);
+					            	ResultSet rs1 = DBControllor.excuteQuery(sql);
+					            %>
+<!-- 					            <td>1-12</td> -->
+					            <td>
+					            <%
+					            String[] weekday = {"周日","周一","周二","周三","周四","周五","周六"};
+					            String[] num = {"1-2节","3-4节","5-6节","7-8节","9-10节"};
+					            boolean yes = false;
+					            while(rs1.next()){ yes=true;%>
+					            <%=weekday[Integer.parseInt(rs1.getString("Cday"))] %>
+					            <%=num[Integer.parseInt(rs1.getString("Cnum"))] %> 
+					            <%=rs1.getString("Rname") %> 
+					            	第<%=rs1.getString("Cstart") %>周-第<%=rs1.getString("Cend") %>周<br />
+					            <%} if(!yes){%>
+					            <%="未定" %>
+					            <%} %>
+					            </td>
 					            <td></td>
 				           </tr>  
+				           <%} %>
 				      </tbody>
 				  </table>
 				</div>
@@ -157,23 +244,52 @@
 					            <td ><div><strong>授课教师</strong></div></td>
 					            <td><div><strong>学时</strong></div></td>
 					            <td><div><strong>学分</strong></div></td>
-					            <td><div><strong>起止周</strong></div></td>
+<!-- 					            <td><div><strong>起止周</strong></div></td> -->
 					            <td><div><strong>上课时间与教室</strong></div></td>
 					             <td><div><strong>备注</strong></div></td>
 
 					        </tr>
+				       		<%
+					        	 sql = "select distinct Course.Cid,Cname,Tname,Chour,Ccredit,SC.Tempid from SC inner join TempCourse on SC.Tempid=TempCourse.Tempid"+
+					        	" inner join Course on Course.Cid=TempCourse.Cid inner join Teacher on Teacher.Tid="
+					        	+"TempCourse.Tid";
+					        	sql+=String.format(" where SC.Sid='%s' and TempCourse.Term='%s' and Ctype='2'", student.getID(),
+					        			DataManager.getTerm());
+					        	 rs = DBControllor.excuteQuery(sql);
+					        	while(rs.next()){
+					         %>
 				       		<tr bgcolor="#C8D6FF">
-					           
-					            <td height="25">08T1370030</td>
-					            <td>程序设计语言</td>
-					            
-					            <td>全校任选</td>
-					            <td>70</td>
-					            <td>4</td>
-					            <td>1-12</td>
-					            <td>周一1-2节 正心22 <br />周三5-6节 致知12	</td>
+					            <td height="25"><%=rs.getString("Cid") %></td>
+					            <td><%=rs.getString("Cname") %></td>
+					            <td><%=rs.getString("Tname") %></td>
+					            <td><%=rs.getString("Chour") %></td>
+					            <td><%=rs.getString("Ccredit") %></td>
+					            <% String tempid = rs.getString("Tempid");
+					            	sql = "select Cday,Cnum,Rname,Cstart,Cend from SCT inner join Cweek on SCT.SCTid=Cweek.SCTid inner "+
+					            	"join Ctime on Ctime.CweekID=Cweek.CweekID inner join CRoomArrange on Cweek.CweekID="+
+					            	"CRoomArrange.CweekID";
+					            	sql+=String.format(" where SCT.Tempid='%s'", rs.getString("Tempid"));
+					            	//System.out.print(sql);
+					            	ResultSet rs1 = DBControllor.excuteQuery(sql);
+					            %>
+<!-- 					            <td>1-12</td> -->
+					            <td>
+					            <%
+					            String[] weekday = {"周日","周一","周二","周三","周四","周五","周六"};
+					            String[] num = {"1-2节","3-4节","5-6节","7-8节","9-10节"};
+					            boolean yes = false;
+					            while(rs1.next()){ yes=true;%>
+					            <%=weekday[Integer.parseInt(rs1.getString("Cday"))] %>
+					            <%=num[Integer.parseInt(rs1.getString("Cnum"))] %> 
+					            <%=rs1.getString("Rname") %> 
+					            	第<%=rs1.getString("Cstart") %>周-第<%=rs1.getString("Cend") %>周<br />
+					            <%} if(!yes){%>
+					            <%="未定" %>
+					            <%} %>
+					            </td>
 					            <td></td>
 				           </tr>  
+				           <%} %>
 				      </tbody>
 				  </table>
 				</div>
